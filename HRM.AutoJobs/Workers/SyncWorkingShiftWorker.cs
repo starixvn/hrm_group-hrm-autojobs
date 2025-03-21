@@ -1,0 +1,30 @@
+﻿using HRM.AutoJobs.Services.Interfaces;
+
+namespace HRM.AutoJobs.Workers;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Constants;
+using Helpers;
+using Models;
+
+
+public class SyncWorkingShiftWorker : BaseWorker
+{
+    private readonly ISyncWorkingShiftService syncWorkingShiftService;
+
+    public SyncWorkingShiftWorker(
+        ISyncWorkingShiftService syncWorkingShiftService,
+        List<JobSetting> jobSettings,
+        ILogger<SyncWorkingShiftWorker> logfile,
+        Fanex.Logging.ILogger logger) : base(logfile, logger)
+    {
+        this.syncWorkingShiftService = syncWorkingShiftService;
+        jobSetting = JobHelper.GetJobConfig(jobSettings, JobSettingConstants.SyncWorkingShiftFromOWP);
+    }
+
+    public override async Task DoWorkAsync()
+    {
+        await syncWorkingShiftService.SyncWorkingShiftAsync();
+    }
+}
