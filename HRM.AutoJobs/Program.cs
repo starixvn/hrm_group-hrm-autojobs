@@ -1,4 +1,3 @@
-using Fanex.Data.SqlServer;
 using Fanex.Logging.Sentry.RavenClient;
 using HRM.AutoJobs;
 

@@ -27,6 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Group-HRM\HRM.LetStalk.Core\HRM.LetStalk.Core.csproj" />
+    <ProjectReference Include="..\src\HRM.LetStalk.Core\HRM.LetStalk.Core.csproj" />
   </ItemGroup>
 </Project>
