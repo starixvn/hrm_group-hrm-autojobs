@@ -1,13 +1,12 @@
-﻿using HRM.AutoJobs.Services.Interfaces;
+﻿using HRM.Job.Constants;
+using HRM.Job.Helpers;
+using HRM.Job.Models;
+using HRM.Job.Services.Interfaces;
 
 namespace HRM.AutoJobs.Workers;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Constants;
-using Helpers;
-using Models;
-
 
 public class SyncWorkingShiftWorker : BaseWorker
 {

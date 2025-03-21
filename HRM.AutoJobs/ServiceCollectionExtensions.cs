@@ -1,10 +1,10 @@
 ﻿using Fanex.Logging;
 using Fanex.Caching.Redis;
 using Fanex.Data.Repository;
-using HRM.AutoJobs.Models;
-using HRM.AutoJobs.Services;
-using HRM.AutoJobs.Services.Interfaces;
 using HRM.AutoJobs.Workers;
+using HRM.Job.Models;
+using HRM.Job.Services;
+using HRM.Job.Services.Interfaces;
 using HRM.LetStalk.Core.Services;
 using HRM.LetStalk.Core.Services.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
