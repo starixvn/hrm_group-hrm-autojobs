@@ -17,12 +17,8 @@ public static class ServiceCollectionExtensions
 {
     public static void AddCoreServices(this IServiceCollection services)
     {
-        //services.AddSingleton<IJobFactory, JobFactory>();
-        //services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
         services.AddSingleton<ILogger, Logger>();
-
         services.AddSingleton<IDynamicRepository, DynamicRepository>();
-
         services.AddSingleton<IBaseService, BaseService>();
         services.AddSingleton<IBaseMailService, BaseMailService>();
         services.AddSingleton<IHttpClientService, HttpClientService>();
@@ -34,7 +30,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ITimeRecordService, TimeRecordService>();
         services.AddSingleton<ISyncWorkingShiftService, SyncWorkingShiftService>();
         services.AddSingleton<IPostnatalService, PostnatalService>();
-
         services.AddSingleton<IGroupReportService, GroupReportService>();
     }
 
