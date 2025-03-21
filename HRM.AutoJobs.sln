@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRM.LetStalk.Core", "..\Group-HRM\HRM.Letstalk.Core\HRM.LetStalk.Core.csproj", "{2BEB60AC-E69C-DE8E-00D7-DABE6F23035E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPA.SyncJob", "EPA.SyncJob\EPA.SyncJob.csproj", "{3C43887B-4B3F-4122-93FA-7474E8BFD76F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{2BEB60AC-E69C-DE8E-00D7-DABE6F23035E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BEB60AC-E69C-DE8E-00D7-DABE6F23035E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BEB60AC-E69C-DE8E-00D7-DABE6F23035E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C43887B-4B3F-4122-93FA-7474E8BFD76F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C43887B-4B3F-4122-93FA-7474E8BFD76F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C43887B-4B3F-4122-93FA-7474E8BFD76F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C43887B-4B3F-4122-93FA-7474E8BFD76F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
