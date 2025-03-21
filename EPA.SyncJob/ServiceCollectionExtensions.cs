@@ -16,18 +16,33 @@ using Microsoft.Extensions.Configuration;
 using EPA.SyncJob.Services.Interfaces;
 using EPA.SyncJob.Services;
 using EPA.SyncJob.Worker;
+using EPA.SyncJob.Models;
+using EPA.SyncJob.ThirdPartyAPI;
+using EPA.SyncJob.Services.Interface;
 
 namespace EPA.SyncJob;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddCoreServices(this IServiceCollection services)
+    public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
     {
+        var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>();
+        services.AddSingleton(appSettings);
+
+        var jobSettings = configuration.GetSection("JobSettings").Get<List<JobSetting>>();
+        services.AddSingleton(jobSettings);
+
         services.AddSingleton<ILogger, Logger>();
 
         services.AddSingleton<IDynamicRepository, DynamicRepository>();
         services.AddSingleton<IBaseService, BaseService>();
         services.AddSingleton<IDepartmentService, DepartmentService>();
+        services.AddSingleton<IDepartmentAPI, DepartmentAPI>();
+        services.AddSingleton<ITokenService, TokenService>();
+        services.AddSingleton<ITokenAPI, TokenAPI>();
+        services.AddSingleton<IHttpClientService, HttpClientService>();
+
+        services.AddHttpClient();
 
 
         return services;

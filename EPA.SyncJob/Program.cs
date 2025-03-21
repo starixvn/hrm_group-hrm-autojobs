@@ -7,13 +7,11 @@ using Microsoft.Extensions.Logging;
 var builder = Host.CreateApplicationBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
-var logger = LoggerFactory.Create(logging => logging.AddConsole()).CreateLogger<Program>();
 
 var storedProcedurePath = configuration.GetSection("StoredProcedurePath").Value;
-logger.LogInformation("StoredProcedurePath: {StoredProcedurePath}", storedProcedurePath);
 
-services.AddCoreServices();
-//services.AddFanexLogSentry(configuration);
+services.AddCoreServices(configuration);
+services.AddFanexLogSentry(configuration);
 services.AddFanexSql(configuration);
 //services.AddRedis(configuration);
 //services.AddRedisSession(configuration);
