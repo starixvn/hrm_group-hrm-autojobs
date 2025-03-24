@@ -1,0 +1,16 @@
+﻿namespace EPA.SyncJob.ThirdPartyAPI
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using EPA.SyncJob.Model.API;
+    using EPA.SyncJob.Models;
+    using Model;
+
+    public interface IEmployeeAPI
+    {
+        Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+
+        Task<CommandResult> UpdateAsync(IEnumerable<Employee> employees, TokenAccess token);
+    }
+}

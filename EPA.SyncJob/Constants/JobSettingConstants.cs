@@ -4,5 +4,6 @@ public static class JobSettingConstants
 {
     public const string SyncDepartment = "SyncDepartment";
     public const string SyncTeam = "SyncTeam";
+    public const string SyncEmployee = "SyncEmployee";
 
 }

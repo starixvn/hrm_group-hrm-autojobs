@@ -19,7 +19,7 @@ namespace EPA.SyncJob.Worker
             ITokenService tokenService,
             ICompanyService companyService,
             List<JobSetting> jobSettings,
-            ILogger<SyncDepartmentWorker> logfile,
+            ILogger<SyncTeamWorker> logfile,
             Fanex.Logging.ILogger logger) : base(logfile, logger)
         {
             

@@ -44,6 +44,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ICompanyService, CompanyService>();
         services.AddSingleton<ITeamService, TeamService>();
         services.AddSingleton<ITeamAPI, TeamAPI>();
+        services.AddSingleton<IEmployeeService, EmployeeService>();
+        services.AddSingleton<IEmployeeAPI, EmployeeAPI>();
         services.AddSingleton<IHttpClientService, HttpClientService>();
 
         services.AddHttpClient();
@@ -88,6 +90,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddHostedService<SyncDepartmentWorker>();
         services.AddHostedService<SyncTeamWorker>();
+        services.AddHostedService<SyncEmployeeWorker>();
         return services;
     }
 }

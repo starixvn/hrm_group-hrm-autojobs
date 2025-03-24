@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Functions>
     <Function Name="Employee">
-        <Setting Key="Sync_Employee_Get" SpName="Sync_Employee_Get" DbName="bodb_HRM" Plain="0">
+        <Setting Key="SyncEPA_Employee_Get" SpName="SyncEPA_Employee_Get" DbName="bodb_HRM" Plain="0">
             <Mapping DataField="EmpId" ObjectProperty="EmployeeId" />
         </Setting>
         <Setting Key="SyncEPA_EmployeeGroup_Get" SpName="SyncEPA_EmployeeGroup_Get" DbName="bodb_HRM" Plain="0" />
