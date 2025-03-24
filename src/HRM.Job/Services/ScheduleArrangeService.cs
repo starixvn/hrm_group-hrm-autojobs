@@ -5,10 +5,13 @@ namespace HRM.Job.Services;
 
 public class ScheduleArrangeService(IBaseService baseService) : IScheduleArrangeService
 {
-    public async Task PublicScheduleAsync()
+    public async Task PublicScheduleAsync(List<short> companyIds)
     {
-        var command = new PublicScheduleCommand();
-        await baseService.ExecuteNonQueryAsync(command);
+        foreach (var companyId in companyIds)
+        {
+            var command = new PublicScheduleCommand { CompanyId = companyId };
+            await baseService.ExecuteNonQueryAsync(command);
+        }
     }
 
     public async Task InsertDefaultShiftAsync()

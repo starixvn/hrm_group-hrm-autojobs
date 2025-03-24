@@ -2,7 +2,7 @@
 
 public interface IScheduleArrangeService
 {
-    Task PublicScheduleAsync();
+    Task PublicScheduleAsync(List<short> companyIds);
 
     Task InsertDefaultShiftAsync();
 

@@ -25,6 +25,6 @@ public class PublicScheduleWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        await scheduleArrangeService.PublicScheduleAsync();
+        await scheduleArrangeService.PublicScheduleAsync(jobSetting.CompanyId);
     }
 }
