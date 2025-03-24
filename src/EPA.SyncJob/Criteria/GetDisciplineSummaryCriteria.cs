@@ -1,0 +1,20 @@
+﻿namespace EPA.SyncJob.Criteria
+{
+    using System;
+    using Fanex.Data.Repository;
+
+    public class GetDisciplineSummaryCriteria : CriteriaBase
+    {
+        public DateTime LastModifiedDate { get; set; }
+
+        public override string GetSettingKey()
+        {
+            return "Sync_DisciplineSummary";
+        }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
+    }
+}
