@@ -2,7 +2,7 @@
 using EPA.SyncJob.Model.API;
 using EPA.SyncJob.Models;
 
-namespace EPA.SyncJob.Services.Interfaces;
+namespace EPA.SyncJob.Services.Interface;
 
 public interface IDepartmentService
 {

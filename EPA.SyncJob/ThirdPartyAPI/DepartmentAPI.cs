@@ -11,16 +11,8 @@
     using Model;
     using Newtonsoft.Json;
 
-    public class DepartmentAPI : IDepartmentAPI
+    public class DepartmentAPI(AppSettings appSettings, IHttpClientService httpClient) : IDepartmentAPI
     {
-        private readonly AppSettings appSettings;
-        private readonly IHttpClientService httpClient;
-
-        public DepartmentAPI(AppSettings appSettings, IHttpClientService httpClient)
-        {
-            this.appSettings = appSettings;
-            this.httpClient = httpClient;
-        }
         public async Task<DateTime> GetLastModifiedDate(TokenAccess token)
         {
             var result = await httpClient.ExecuteGetAsync<DateTime>(appSettings.ServiceAPI + "Department", token.Value, null);
@@ -29,8 +21,8 @@
 
         public async Task<CommandResult> UpdateAsync(IEnumerable<Department> departments, TokenAccess token)
         {
-            var result = httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "Department", token.Value, JsonConvert.SerializeObject(departments.ToArray()));
-            return result.Result;
+            var result = await httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "Department", token.Value, JsonConvert.SerializeObject(departments.ToArray()));
+            return result;
         }
     }
 }

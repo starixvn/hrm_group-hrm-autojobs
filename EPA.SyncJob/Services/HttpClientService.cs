@@ -45,7 +45,7 @@ public class HttpClientService : IHttpClientService
         ThrowExceptionWhenNotSuccess(response);
         if (response.IsSuccessStatusCode)
         {
-            var responseData = await response.Content.ReadAsStringAsync();
+           var responseData = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrEmpty(responseData))
             {
                 return new T();

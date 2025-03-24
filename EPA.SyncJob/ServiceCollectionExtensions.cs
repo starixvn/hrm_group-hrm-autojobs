@@ -19,6 +19,7 @@ using EPA.SyncJob.Worker;
 using EPA.SyncJob.Models;
 using EPA.SyncJob.ThirdPartyAPI;
 using EPA.SyncJob.Services.Interface;
+using EPA.SyncJob.ThirdPartyAPI;
 
 namespace EPA.SyncJob;
 
@@ -40,6 +41,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IDepartmentAPI, DepartmentAPI>();
         services.AddSingleton<ITokenService, TokenService>();
         services.AddSingleton<ITokenAPI, TokenAPI>();
+        services.AddSingleton<ICompanyService, CompanyService>();
+        services.AddSingleton<ITeamService, TeamService>();
+        services.AddSingleton<ITeamAPI, TeamAPI>();
         services.AddSingleton<IHttpClientService, HttpClientService>();
 
         services.AddHttpClient();
@@ -83,6 +87,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddJobsServices(this IServiceCollection services)
     {
         services.AddHostedService<SyncDepartmentWorker>();
+        services.AddHostedService<SyncTeamWorker>();
         return services;
     }
 }

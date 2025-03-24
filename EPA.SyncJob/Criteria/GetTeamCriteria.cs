@@ -6,10 +6,11 @@
     public class GetTeamCriteria : CriteriaBase
     {
         public DateTime? FromDate { get; set; }
+        public short CompanyId { get; set; }
 
         public override string GetSettingKey()
         {
-            return "EmployeeGroup_Get";
+            return "SyncEPA_EmployeeGroup_Get";
         }
 
         public override bool IsValid()
