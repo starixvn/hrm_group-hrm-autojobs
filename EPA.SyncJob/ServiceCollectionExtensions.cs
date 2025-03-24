@@ -46,6 +46,14 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ITeamAPI, TeamAPI>();
         services.AddSingleton<IEmployeeService, EmployeeService>();
         services.AddSingleton<IEmployeeAPI, EmployeeAPI>();
+        services.AddSingleton<IJobTitleService, JobTitleService>();
+        services.AddSingleton<IJobTitleAPI, JobTitleAPI>();
+        services.AddSingleton<IDisciplinePermissionService, DisciplinePermissionService>();
+        services.AddSingleton<IEmployeeDisciplinePermissionAPI, EmployeeDisciplinePermissionAPI>();
+        services.AddSingleton<ITeamDisciplinePermissionAPI, TeamDisciplinePermissionAPI>();
+        services.AddSingleton<IDisciplineSummaryAPI, IDisciplineSummaryAPI>();
+        services.AddSingleton<IDisciplineSummaryService, DisciplineSummaryService>();
+
         services.AddSingleton<IHttpClientService, HttpClientService>();
 
         services.AddHttpClient();
@@ -91,6 +99,11 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<SyncDepartmentWorker>();
         services.AddHostedService<SyncTeamWorker>();
         services.AddHostedService<SyncEmployeeWorker>();
+        services.AddHostedService<SyncJobTitleWorker>();
+        services.AddHostedService<SyncEmployeeDisciplinePermissionWorker>();
+        services.AddHostedService<SyncGroupDisciplinePermissionWorker>();
+        services.AddHostedService<SyncDisciplineSummaryWorker>();
+
         return services;
     }
 }

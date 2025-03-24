@@ -7,9 +7,11 @@
     {
         public DateTime LastModifiedDate { get; set; }
 
+        public short CompanyId { get; set; }
+
         public override string GetSettingKey()
         {
-            return "Sync_DisciplineSummary";
+            return "SyncEPA_DisciplineSummary";
         }
 
         public override bool IsValid()

@@ -4,11 +4,10 @@ using EPA.SyncJob.Models;
 
 namespace EPA.SyncJob.Services.Interface;
 
-public interface IDepartmentService
+public interface IJobTitleService
 {
-    Task<IEnumerable<Department>> GetDepartments(DateTime? fromDate, short companyId);
+    Task<IEnumerable<JobTitle>> GetJobTitles(short companyId);
 
-    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
 
-    Task<CommandResult> Update(IEnumerable<Department> departments, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token);
 }

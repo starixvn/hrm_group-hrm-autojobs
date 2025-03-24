@@ -8,5 +8,5 @@ public interface IDisciplineSummaryAPI
 {
     Task<CommandResult> UpdateAsync(IEnumerable<DisciplineSummary> disciplines, TokenAccess token);
 
-    Task<DateTime> GetLastModifiedDate(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
 }

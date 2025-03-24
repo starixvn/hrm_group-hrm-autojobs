@@ -7,9 +7,11 @@
     {
         public DateTime? FromDate { get; set; }
 
+        public short CompanyId { get; set; }
+
         public override string GetSettingKey()
         {
-            return "GroupSupervisor_GetForSync";
+            return "SyncEPA_GroupSupervisor_Get";
         }
 
         public override bool IsValid()

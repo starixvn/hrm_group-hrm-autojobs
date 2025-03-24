@@ -6,10 +6,11 @@
     public class GetEmployeeDisciplinePermissionCriteria : CriteriaBase
     {
         public DateTime? FromDate { get; set; }
+        public short CompanyId { get; set; }
 
         public override string GetSettingKey()
         {
-            return "EmployeeSupervisor_GetForSync";
+            return "SyncEPA_EmployeeSupervisor_Get";
         }
 
         public override bool IsValid()

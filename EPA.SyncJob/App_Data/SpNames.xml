@@ -7,14 +7,14 @@
         <Setting Key="SyncEPA_EmployeeGroup_Get" SpName="SyncEPA_EmployeeGroup_Get" DbName="bodb_HRM" Plain="0" />
         <Setting Key="SyncEPA_Department" SpName="SyncEPA_Department" DbName="bodb_HRM" Plain="0">
         </Setting>
-        <Setting Key="JobTitle_Get" SpName="JobTitle_Get" DbName="bodb_HRM" Plain="0">
+        <Setting Key="SyncEPA_JobTitle_Get" SpName="SyncEPA_JobTitle_Get" DbName="bodb_HRM" Plain="0">
             <Mapping DataField="Id" ObjectProperty="JobTitleId" />
         </Setting>
-        <Setting Key="Sync_DisciplineSummary" SpName="Sync_DisciplineSummary" DbName="bodb_HRM" Plain="0" />
-        <Setting Key="EmployeeSupervisor_GetForSync" SpName="EmployeeSupervisor_GetForSync" DbName="bodb_HRM" Plain="0">
+        <Setting Key="SyncEPA_DisciplineSummary" SpName="SyncEPA_DisciplineSummary" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="SyncEPA_EmployeeSupervisor_Get" SpName="SyncEPA_EmployeeSupervisor_Get" DbName="bodb_HRM" Plain="0">
             <Mapping DataField="EmpId" ObjectProperty="EmployeeId" />
         </Setting>
-        <Setting Key="GroupSupervisor_GetForSync" SpName="GroupSupervisor_GetForSync" DbName="bodb_HRM" Plain="0">
+        <Setting Key="SyncEPA_GroupSupervisor_Get" SpName="SyncEPA_GroupSupervisor_Get" DbName="bodb_HRM" Plain="0">
             <Mapping DataField="GroupId" ObjectProperty="TeamId" />
         </Setting>
         <Setting Key="Sync_JobLevel" SpName="Sync_JobLevel" DbName="bodb_HRM" Plain="0" />

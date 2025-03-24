@@ -4,9 +4,11 @@
 
     public class GetJobTitleCriteria : CriteriaBase
     {
+        public short CompanyId { get; set; }
+
         public override string GetSettingKey()
         {
-            return "JobTitle_Get";
+            return "SyncEPA_JobTitle_Get";
         }
 
         public override bool IsValid()

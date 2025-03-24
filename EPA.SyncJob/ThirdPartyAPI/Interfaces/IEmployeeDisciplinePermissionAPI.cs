@@ -8,5 +8,5 @@ public interface IEmployeeDisciplinePermissionAPI
 {
     Task<CommandResult> UpdateAsync(IEnumerable<EmployeeDisciplinePermission> jobTitles, TokenAccess token);
 
-    Task<DateTime> GetLastModifiedDate(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
 }

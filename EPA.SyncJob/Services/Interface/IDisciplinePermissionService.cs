@@ -1,0 +1,21 @@
+﻿using EPA.SyncJob.Model;
+using EPA.SyncJob.Model.API;
+using EPA.SyncJob.Models;
+
+namespace EPA.SyncJob.Services.Interface;
+
+public interface IDisciplinePermissionService
+{
+    Task<IEnumerable<EmployeeDisciplinePermission>> GetEmployeesAsync(DateTime fromDate, short companyId);
+
+
+    Task<IEnumerable<TeamDisciplinePermission>> GetGroupsSync(DateTime fromDate, short companyId);
+
+    Task<CommandResult> UpdateEmployeesAsync(IEnumerable<EmployeeDisciplinePermission> employees, TokenAccess token);
+
+    Task<CommandResult> UpdateGroupsAsync(IEnumerable<TeamDisciplinePermission> groups, TokenAccess token);
+
+    Task<DateTime> GetLastModifiedDateForEmployeeAsync(TokenAccess token);
+
+    Task<DateTime> GetLastModifiedDateForGroupAsync(TokenAccess token);
+}

@@ -12,7 +12,7 @@
 
     public class EmployeeDisciplinePermissionAPI(AppSettings appSettings, IHttpClientService httpClient) : IEmployeeDisciplinePermissionAPI
     {
-        public async Task<DateTime> GetLastModifiedDate(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
         {
             var result = await httpClient.ExecuteGetAsync<DateTime>(appSettings.ServiceAPI + "EmployeeDisciplinePermission", token.Value, null);
             return result;
@@ -20,7 +20,8 @@
 
         public async Task<CommandResult> UpdateAsync(IEnumerable<EmployeeDisciplinePermission> employeeSupervisors, TokenAccess token)
         {
-            var result = await httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "EmployeeDisciplinePermission", token.Value, JsonConvert.SerializeObject(employeeSupervisors.ToArray()));
+            var result = await httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "EmployeeDisciplinePermission", token.Value,
+                JsonConvert.SerializeObject(employeeSupervisors.ToArray()));
             return result;
         }
     }

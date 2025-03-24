@@ -1,0 +1,17 @@
+﻿using EPA.SyncJob.Model;
+using EPA.SyncJob.Model.API;
+using EPA.SyncJob.Models;
+using Microsoft.AspNetCore.Http;
+
+namespace EPA.SyncJob.Services.Interface;
+
+public interface IDisciplineSummaryService
+{
+    Task<IEnumerable<DisciplineSummary>> GetDisciplineSummaryAsync(DateTime lastModifiedDate, short companyId);
+
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+
+    Task<CommandResult> UpdateAsync(IEnumerable<DisciplineSummary> disciplines, TokenAccess token);
+
+
+}
