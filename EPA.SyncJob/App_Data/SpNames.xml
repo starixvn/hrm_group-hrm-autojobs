@@ -18,11 +18,6 @@
             <Mapping DataField="GroupId" ObjectProperty="TeamId" />
         </Setting>
         <Setting Key="SyncEPA_JobLevel" SpName="SyncEPA_JobLevel" DbName="bodb_HRM" Plain="0" />
-        <Setting Key="Sync_UserMapping_GetLastModifiedDate" SpName="Sync_UserMapping_GetLastModifiedDate" DbName="bodb_HRM" Plain="0" />
-        <Setting Key="Sync_UserMapping" SpName="Sync_UserMapping" DbName="bodb_HRM" Plain="0" />
-
-        <Setting Key="Sync_GO_UnitHead_GetInfo" SpName="Sync_GO_UnitHead_GetInfo" DbName="bodb_HRM" Plain="0" />
-        <Setting Key="Sync_GO_UnitHead_GetSchedule" SpName="Sync_GO_UnitHead_GetSchedule" DbName="bodb_HRM" Plain="0" />
         <Setting Key="CompanySite_GetByDomain" SpName="CompanySite_GetByDomain" DbName="bodb_HRM" Plain="0" />
     </Function>
 </Functions>
