@@ -5,6 +5,7 @@ namespace HRM.Job.Criteria;
 public class InsertHolidayInYearCommand : NonQueryCommand
 {
     public string Holidays { get; set; }
+    public short CompanyId { get; set; }
 
     public override string GetSettingKey() => "Holiday_AutoGenerate";
 

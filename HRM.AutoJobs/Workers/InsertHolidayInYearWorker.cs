@@ -29,7 +29,10 @@ public class InsertHolidayInYearWorker : BaseWorker
         var today = DateTimeOffset.UtcNow;
         if (today is { Day: 1, Month: September })
         {
-            await holidayService.InsertHolidayInYearAsync();
+            foreach (var companyId in jobSetting.CompanyIds)
+            {
+                await holidayService.InsertHolidayInYearAsync(companyId);
+            }
         }
     }
 }

@@ -31,7 +31,10 @@ public class InsertALBalanceForNextYearWorker : BaseWorker
         if (today is { Day: 1, Month: September }
             || (today.Day == DateTime.DaysInMonth(today.Year, today.Month) && today.Month == December))
         {
-            await annualLeaveBalanceService.InsertForNextYearAsync();
+            foreach (var companyId in jobSetting.CompanyIds)
+            {
+                await annualLeaveBalanceService.InsertForNextYearAsync(companyId);
+            }
         }
     }
 }

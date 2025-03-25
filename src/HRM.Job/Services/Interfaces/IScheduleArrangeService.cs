@@ -5,9 +5,9 @@ namespace HRM.Job.Services.Interfaces;
 
 public interface IScheduleArrangeService
 {
-    Task PublicScheduleAsync(List<short> companyIds);
+    Task PublicScheduleAsync(short companyId);
 
-    Task InsertDefaultShiftAsync();
+    Task InsertDefaultShiftAsync(short companyId);
 
-    Task InsertWeeklyDefaultShiftAsync();
+    Task InsertWeeklyDefaultShiftAsync(short companyId);
 }

@@ -27,7 +27,10 @@ public class InsertDefaultShiftWorker : BaseWorker
     {
         if (DateTimeOffset.UtcNow.DayOfWeek == DayOfWeek.Friday)
         {
-            await scheduleArrangeService.InsertDefaultShiftAsync();
+            foreach (var companyId in jobSetting.CompanyIds)
+            {
+                await scheduleArrangeService.InsertDefaultShiftAsync(companyId);
+            }
         }
     }
 }

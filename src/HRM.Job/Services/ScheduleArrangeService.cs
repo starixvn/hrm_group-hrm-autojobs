@@ -8,35 +8,34 @@ namespace HRM.Job.Services;
 
 public class ScheduleArrangeService(IBaseService baseService) : IScheduleArrangeService
 {
-    public async Task PublicScheduleAsync(List<short> companyIds)
+    public async Task PublicScheduleAsync(short companyId)
     {
-        foreach (var companyId in companyIds)
-        {
-            var command = new PublicScheduleCommand { CompanyId = companyId };
-            await baseService.ExecuteNonQueryAsync(command);
-        }
+        var command = new PublicScheduleCommand { CompanyId = companyId };
+        await baseService.ExecuteNonQueryAsync(command);
     }
 
-    public async Task InsertDefaultShiftAsync()
+    public async Task InsertDefaultShiftAsync(short companyId)
     {
         var fromDate = LastDayOfWeek(DateTimeOffset.Now.Date).AddDays(1);
         var toDate = fromDate.AddDays(6);
         var command = new InsertScheduleByDefaultShiftCommand
         {
             FromDate = fromDate,
-            ToDate = toDate
+            ToDate = toDate,
+            CompanyId = companyId
         };
         await baseService.ExecuteNonQueryAsync(command);
     }
 
-    public async Task InsertWeeklyDefaultShiftAsync()
+    public async Task InsertWeeklyDefaultShiftAsync(short companyId)
     {
         var fromDate = LastDayOfWeek(DateTimeOffset.Now.Date).AddDays(1);
         var toDate = fromDate.AddDays(6);
         var command = new InsertScheduleByWeeklyDefaultShiftCommand
         {
             FromDate = fromDate,
-            ToDate = toDate
+            ToDate = toDate,
+            CompanyId = companyId
         };
         await baseService.ExecuteNonQueryAsync(command);
     }

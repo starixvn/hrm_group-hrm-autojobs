@@ -5,7 +5,7 @@ namespace HRM.Job.Criteria;
 public class UpdateAnnualLeaveBalanceCommand : NonQueryCommand
 {
     public int Year { get; set; }
-    public int? EmpId { get; set; }
+    public short CompanyId { get; set; }
 
     public override string GetSettingKey() => "Auto_AnnualLeaveBalance_Update";
 

@@ -24,6 +24,9 @@ public class InsertALBalanceForNewEmployeeWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        await annualLeaveBalanceService.InsertForNewEmployeeAsync();
+        foreach (var companyId in jobSetting.CompanyIds)
+        {
+            await annualLeaveBalanceService.InsertForNewEmployeeAsync(companyId);
+        }
     }
 }

@@ -4,9 +4,9 @@ namespace HRM.Job.Services.Interfaces;
 
 public interface IAnnualLeaveBalanceService
 {
-    Task InsertForNextYearAsync();
+    Task InsertForNextYearAsync(short companyId);
 
-    Task InsertForNewEmployeeAsync();
+    Task InsertForNewEmployeeAsync(short companyId);
 
-    Task RemindUsedALAsync();
+    Task RemindUsedALAsync(short companyId);
 }

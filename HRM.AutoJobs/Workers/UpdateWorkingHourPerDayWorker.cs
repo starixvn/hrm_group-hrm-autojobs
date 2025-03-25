@@ -24,6 +24,9 @@ public class UpdateWorkingHourPerDayWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        await postnatalService.UpdateWorkingHourPerDayAsync();
+        foreach (var companyId in jobSetting.CompanyIds)
+        {
+            await postnatalService.UpdateWorkingHourPerDayAsync(companyId);
+        }
     }
 }

@@ -4,5 +4,5 @@ namespace HRM.Job.Services.Interfaces;
 
 public interface IHolidayService
 {
-    Task InsertHolidayInYearAsync();
+    Task InsertHolidayInYearAsync(short companyId);
 }

@@ -24,6 +24,9 @@ public class PublicScheduleWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        await scheduleArrangeService.PublicScheduleAsync(jobSetting.CompanyId);
+        foreach (var companyId in jobSetting.CompanyIds)
+        {
+            await scheduleArrangeService.PublicScheduleAsync(companyId);
+        }
     }
 }

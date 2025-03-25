@@ -27,9 +27,12 @@ public class RemindUsedALWorker : BaseWorker
     {
         var months = new[] { 3, 6, 9, 12 };
         var today = DateTimeOffset.UtcNow;
-        if (today.Day == 1 && Array.Exists(months, x => x == today.Month))
+        //if (today.Day == 1 && Array.Exists(months, x => x == today.Month))
         {
-            await annualLeaveBalanceService.RemindUsedALAsync();
+            foreach (var companyId in jobSetting.CompanyIds)
+            {
+                await annualLeaveBalanceService.RemindUsedALAsync(companyId);
+            }
         }
     }
 }

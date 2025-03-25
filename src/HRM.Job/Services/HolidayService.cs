@@ -14,7 +14,7 @@ public class HolidayService(IBaseService baseService) : IHolidayService
 {
     private readonly ChineseLunisolarCalendar chinaCalendar = new();
 
-    public async Task InsertHolidayInYearAsync()
+    public async Task InsertHolidayInYearAsync(short companyId)
     {
         var year = DateTimeOffset.Now.Year + 1;
         var holidays = new List<Holiday>();
@@ -23,7 +23,8 @@ public class HolidayService(IBaseService baseService) : IHolidayService
         holidays = holidays.OrderBy(h => h.FromDate).ToList();
         var command = new InsertHolidayInYearCommand
         {
-            Holidays = holidays.ToXML().ToString()
+            Holidays = holidays.ToXML().ToString(),
+            CompanyId = companyId
         };
         await baseService.ExecuteNonQueryAsync(command);
     }

@@ -7,7 +7,7 @@ public class AnnualLeaveBalance
     public string Nickname { get; set; }
     public string FullName { get; set; }
 
-    public string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
     public bool IsLocal { get; set; }
 
     public float AnnualLeaveCurrentYear { get; set; }
