@@ -1,12 +1,12 @@
-﻿using HRM.Job.Models;
-
-namespace HRM.AutoJobs.Workers;
+﻿namespace HRM.AutoJobs.Workers;
 
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Cronos;
+using Job.Models;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 public class BaseWorker(ILogger<BaseWorker> logfile, Fanex.Logging.ILogger logger) : BackgroundService
 {

@@ -1,12 +1,12 @@
-﻿using HRM.Job.Constants;
-using HRM.Job.Helpers;
-using HRM.Job.Models;
-using HRM.Job.Services.Interfaces;
-
-namespace HRM.AutoJobs.Workers;
+﻿namespace HRM.AutoJobs.Workers;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Job.Constants;
+using Job.Helpers;
+using Job.Models;
+using Job.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 public class UpdateWorkingHourPerDayWorker : BaseWorker
 {

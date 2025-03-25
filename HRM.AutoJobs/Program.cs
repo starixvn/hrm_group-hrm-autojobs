@@ -1,5 +1,7 @@
 using Fanex.Logging.Sentry.RavenClient;
 using HRM.AutoJobs;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = Host.CreateApplicationBuilder(args);
 var services = builder.Services;

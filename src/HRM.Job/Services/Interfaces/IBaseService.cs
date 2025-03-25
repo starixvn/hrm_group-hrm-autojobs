@@ -1,4 +1,7 @@
-﻿using Fanex.Data.Repository;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Fanex.Data.Repository;
 
 namespace HRM.Job.Services.Interfaces;
 

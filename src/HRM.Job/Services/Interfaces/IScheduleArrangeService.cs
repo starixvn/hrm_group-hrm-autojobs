@@ -1,4 +1,7 @@
-﻿namespace HRM.Job.Services.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace HRM.Job.Services.Interfaces;
 
 public interface IScheduleArrangeService
 {

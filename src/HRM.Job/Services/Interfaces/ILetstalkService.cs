@@ -1,4 +1,6 @@
-﻿namespace HRM.Job.Services.Interfaces;
+﻿using System.Threading.Tasks;
+
+namespace HRM.Job.Services.Interfaces;
 
 public interface ILetStalkService
 {

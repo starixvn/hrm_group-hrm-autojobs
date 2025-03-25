@@ -1,6 +1,8 @@
-﻿using Fanex.Logging;
+﻿using System;
+using System.Collections.Generic;
 using Fanex.Caching.Redis;
 using Fanex.Data.Repository;
+using Fanex.Logging;
 using HRM.AutoJobs.Workers;
 using HRM.Job.Models;
 using HRM.Job.Services;
@@ -8,8 +10,9 @@ using HRM.Job.Services.Interfaces;
 using HRM.LetStalk.Core.Services;
 using HRM.LetStalk.Core.Services.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
-using ILogger = Fanex.Logging.ILogger;
 
 namespace HRM.AutoJobs;
 
@@ -28,9 +31,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAnnualLeaveBalanceService, AnnualLeaveBalanceService>();
         services.AddSingleton<IHolidayService, HolidayService>();
         services.AddSingleton<ITimeRecordService, TimeRecordService>();
-        services.AddSingleton<ISyncWorkingShiftService, SyncWorkingShiftService>();
         services.AddSingleton<IPostnatalService, PostnatalService>();
-        services.AddSingleton<IGroupReportService, GroupReportService>();
     }
 
     public static void ConfigureAppSettings(this IServiceCollection services, IConfiguration configuration)
@@ -43,9 +44,6 @@ public static class ServiceCollectionExtensions
 
         var jobSettings = configuration.GetSection("JobSettings").Get<List<JobSetting>>();
         services.AddSingleton(jobSettings);
-
-        var userControlSettings = configuration.GetSection("UserControlSettings").Get<UserControlSettings>();
-        services.AddSingleton(userControlSettings);
     }
 
     public static void AddRedis(this IServiceCollection services, IConfiguration configuration)
@@ -80,7 +78,7 @@ public static class ServiceCollectionExtensions
 
     public static void AddJobsServices(this IServiceCollection services)
     {
-        services.AddHostedService<ImportTimeRecordWorker>();
+        services.AddHostedService<SyncTimeRecordWorker>();
         services.AddHostedService<InsertHolidayInYearWorker>();
 
         services.AddHostedService<PublicScheduleWorker>();
@@ -90,7 +88,5 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<InsertALBalanceForNextYearWorker>();
         services.AddHostedService<InsertALBalanceForNewEmployeeWorker>();
         services.AddHostedService<RemindUsedALWorker>();
-
-        services.AddHostedService<SyncEmployeeInfoToGroupReportWorker>();
     }
 }

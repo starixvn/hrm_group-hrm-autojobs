@@ -1,4 +1,7 @@
-﻿using HRM.Job.Criteria;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using HRM.Job.Criteria;
 using HRM.Job.Services.Interfaces;
 
 namespace HRM.Job.Services;

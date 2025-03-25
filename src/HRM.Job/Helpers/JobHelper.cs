@@ -1,4 +1,7 @@
-﻿using HRM.Job.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using HRM.Job.Models;
 
 namespace HRM.Job.Helpers;
 

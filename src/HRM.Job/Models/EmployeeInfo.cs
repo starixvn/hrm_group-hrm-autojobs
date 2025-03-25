@@ -1,4 +1,6 @@
-﻿namespace HRM.Job.Models;
+﻿using System;
+
+namespace HRM.Job.Models;
 
 [Serializable]
 public class EmployeeInfo

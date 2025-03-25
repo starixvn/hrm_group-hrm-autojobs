@@ -1,4 +1,5 @@
-﻿using Fanex.Data.Repository;
+﻿using System;
+using Fanex.Data.Repository;
 
 namespace HRM.Job.Criteria;
 

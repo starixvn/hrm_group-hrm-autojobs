@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Security;
@@ -6,6 +7,7 @@ using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using HRM.Job.Criteria.MailDeliver;
 using HRM.Job.Models;
 using HRM.Job.Models.MailDeliver;
@@ -53,21 +55,6 @@ public class BaseMailService(
         {
             await mailClient.SendAsync(message);
             await UpdateMailStatusAsync(email, true);
-        }
-        catch (AuthenticationException ex)
-        {
-            await HandleMailErrorAsync(email, ex.Message, ex.StackTrace);
-            throw;
-        }
-        catch (SmtpCommandException ex)
-        {
-            await HandleMailErrorAsync(email, ex.Message, ex.StackTrace);
-            throw;
-        }
-        catch (SmtpProtocolException ex)
-        {
-            await HandleMailErrorAsync(email, ex.Message, ex.StackTrace);
-            throw;
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
-﻿using HRM.Job.Models.MailDeliver;
+﻿using System.Threading.Tasks;
+using HRM.Job.Models.MailDeliver;
 
 namespace HRM.Job.Services.Interfaces;
 

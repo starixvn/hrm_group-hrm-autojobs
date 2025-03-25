@@ -1,4 +1,6 @@
-﻿using HRM.Job.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HRM.Job.Models;
 using HRM.Job.Services.Interfaces;
 using HRM.LetStalk.Core.Services.Interfaces;
 

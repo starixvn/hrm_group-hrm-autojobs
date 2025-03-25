@@ -1,4 +1,5 @@
-﻿using HRM.Job.Extensions;
+﻿using System;
+using HRM.Job.Extensions;
 
 namespace HRM.Job.Models;
 

@@ -1,25 +1,25 @@
-﻿using HRM.Job.Constants;
-using HRM.Job.Helpers;
-using HRM.Job.Models;
-using HRM.Job.Services.Interfaces;
-
-namespace HRM.AutoJobs.Workers;
+﻿namespace HRM.AutoJobs.Workers;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Job.Constants;
+using Job.Helpers;
+using Job.Models;
+using Job.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
-public class ImportTimeRecordWorker : BaseWorker
+public class SyncTimeRecordWorker : BaseWorker
 {
     private readonly ITimeRecordService timeRecordService;
 
-    public ImportTimeRecordWorker(
+    public SyncTimeRecordWorker(
         ITimeRecordService timeRecordService,
         List<JobSetting> jobSettings,
-        ILogger<ImportTimeRecordWorker> logfile,
+        ILogger<SyncTimeRecordWorker> logfile,
         Fanex.Logging.ILogger logger) : base(logfile, logger)
     {
         this.timeRecordService = timeRecordService;
-        jobSetting = JobHelper.GetJobConfig(jobSettings, JobSettingConstants.ImportTimeRecord);
+        jobSetting = JobHelper.GetJobConfig(jobSettings, JobSettingConstants.SyncTimeRecordFromAPI);
     }
 
     public override async Task DoWorkAsync()

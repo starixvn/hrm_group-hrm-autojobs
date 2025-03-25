@@ -1,4 +1,7 @@
-﻿namespace HRM.Job.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace HRM.Job.Models;
 
 [Serializable]
 public class JobSetting
