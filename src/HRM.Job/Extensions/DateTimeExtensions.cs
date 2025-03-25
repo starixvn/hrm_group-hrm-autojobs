@@ -12,4 +12,11 @@ public static class DateTimeExtensions
         var offsetTime = new DateTimeOffset(time, timeZone);
         return offsetTime.ToOffset(ServerTimeZone).DateTime;
     }
+
+    public static DateTime ToClientTimeZone(this DateTime time, short clientTimeZone)
+    {
+        var timeZone = TimeSpan.FromHours(clientTimeZone);
+        var offsetTime = new DateTimeOffset(time, ServerTimeZone);
+        return offsetTime.ToOffset(timeZone).DateTime;
+    }
 }

@@ -1,20 +1,22 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using Fanex.Logging;
+using HRM.Job.Constants;
 using HRM.Job.Criteria;
+using HRM.Job.Extensions;
+using HRM.Job.Models;
 using HRM.Job.Services.Interfaces;
 using Newtonsoft.Json;
-using Fanex.Logging;
-using System.Net.Http;
-using HRM.Job.Models;
-using System.Linq;
-using System.Threading;
-using HRM.Job.Extensions;
 
 namespace HRM.Job.Services;
 
 public class TimeRecordService(
-    IList<TimeRecordApiSetting> apiSettings,
+    List<TimeRecordApiSetting> apiSettings,
     IHttpClientFactory clientFactory,
     ILogger logger,
     IBaseService baseService) : ITimeRecordService
@@ -47,19 +49,41 @@ public class TimeRecordService(
             var records = JsonConvert.DeserializeObject<IList<TimeRecordAPI>>(rawData);
             if (records != null && records.Any())
             {
-                var command = new ImportTimeRecordCommand
-                {
-                    FromDate = fromDate,
-                    ToDate = toDate,
-                    TimeRecordXml = records.ToXML().ToString()
-                };
-                await baseService.ExecuteNonQueryAsync(command);
+                await ImportTimeRecordAsync(fromDate, toDate, records);
             }
         }
         else
         {
             var message = await response.Content.ReadAsStringAsync();
             await logger.ErrorAsync($"Sync time record, StatusCode: {response.StatusCode}\r\nMessage: {message}");
+        }
+    }
+
+    private async Task ImportTimeRecordAsync(DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
+    {
+        var recordsByCompany = records.GroupBy(x => x.Company);
+        foreach (var record in recordsByCompany)
+        {
+            var company = TimeRecordApiConstant.CompanyDict.GetValueOrDefault(record.Key);
+            if (company != default)
+            {
+                var (companyId, clientTimeZone) = company;
+                var timeRecords = record.ToList();
+                foreach (var timeRecord in timeRecords)
+                {
+                    timeRecord.RecordTime = timeRecord.RecordTime.ToServerTimeZone(clientTimeZone);
+                }
+
+                var command = new ImportTimeRecordCommand
+                {
+                    CompanyId = companyId,
+                    FromDate = fromDate,
+                    ToDate = toDate,
+                    TimeRecordXml = timeRecords.ToXML().ToString()
+                };
+                var thread = new Thread(() => baseService.ExecuteNonQueryAsync(command));
+                thread.Start();
+            }
         }
     }
 }

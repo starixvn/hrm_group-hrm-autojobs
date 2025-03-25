@@ -44,6 +44,9 @@ public static class ServiceCollectionExtensions
 
         var jobSettings = configuration.GetSection("JobSettings").Get<List<JobSetting>>();
         services.AddSingleton(jobSettings);
+
+        var timeRecordApiSettings = configuration.GetSection("TimeRecordApiSettings").Get<List<TimeRecordApiSetting>>();
+        services.AddSingleton(timeRecordApiSettings);
     }
 
     public static void AddRedis(this IServiceCollection services, IConfiguration configuration)
