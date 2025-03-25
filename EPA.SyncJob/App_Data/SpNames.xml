@@ -17,7 +17,7 @@
         <Setting Key="SyncEPA_GroupSupervisor_Get" SpName="SyncEPA_GroupSupervisor_Get" DbName="bodb_HRM" Plain="0">
             <Mapping DataField="GroupId" ObjectProperty="TeamId" />
         </Setting>
-        <Setting Key="Sync_JobLevel" SpName="Sync_JobLevel" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="SyncEPA_JobLevel" SpName="SyncEPA_JobLevel" DbName="bodb_HRM" Plain="0" />
         <Setting Key="Sync_UserMapping_GetLastModifiedDate" SpName="Sync_UserMapping_GetLastModifiedDate" DbName="bodb_HRM" Plain="0" />
         <Setting Key="Sync_UserMapping" SpName="Sync_UserMapping" DbName="bodb_HRM" Plain="0" />
 

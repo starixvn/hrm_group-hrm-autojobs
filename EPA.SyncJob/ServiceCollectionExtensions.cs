@@ -51,8 +51,10 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IDisciplinePermissionService, DisciplinePermissionService>();
         services.AddSingleton<IEmployeeDisciplinePermissionAPI, EmployeeDisciplinePermissionAPI>();
         services.AddSingleton<ITeamDisciplinePermissionAPI, TeamDisciplinePermissionAPI>();
-        services.AddSingleton<IDisciplineSummaryAPI, IDisciplineSummaryAPI>();
+        services.AddSingleton<IDisciplineSummaryAPI, DisciplineSummaryAPI>();
         services.AddSingleton<IDisciplineSummaryService, DisciplineSummaryService>();
+        services.AddSingleton<IJobLevelService, JobLevelService>();
+        services.AddSingleton<IJobLevelAPI, JobLevelAPI>();
 
         services.AddSingleton<IHttpClientService, HttpClientService>();
 
@@ -103,6 +105,7 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<SyncEmployeeDisciplinePermissionWorker>();
         services.AddHostedService<SyncGroupDisciplinePermissionWorker>();
         services.AddHostedService<SyncDisciplineSummaryWorker>();
+        services.AddHostedService<SyncJobLevelWorker>();
 
         return services;
     }

@@ -9,6 +9,7 @@ public static class JobSettingConstants
     public const string SyncEmployeeDiscipline = "SyncEmployeeDiscipline";
     public const string SyncGroupDiscipline = "SyncGroupDiscipline";
     public const string SyncDisciplineSummary = "SyncDisciplineSummary";
+    public const string SyncJobLevel = "SyncJobLevel";
 
 
 }

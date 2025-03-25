@@ -9,7 +9,7 @@
 
         public override string GetSettingKey()
         {
-            return "Sync_JobLevel";
+            return "SyncEPA_JobLevel";
         }
 
         public override bool IsValid()

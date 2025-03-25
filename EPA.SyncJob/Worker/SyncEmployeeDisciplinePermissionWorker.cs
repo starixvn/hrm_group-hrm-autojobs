@@ -8,18 +8,18 @@ using Microsoft.Extensions.Logging;
 
 namespace EPA.SyncJob.Worker
 {
-    public class SyncEmployeeDisciplinePermission : BaseWorker
+    public class SyncEmployeeDisciplinePermissionWorker : BaseWorker
     {
         private readonly IDisciplinePermissionService disciplineService;
         private readonly ITokenService tokenService;
         private readonly ICompanyService companyService;
 
-        public SyncEmployeeDisciplinePermission(
+        public SyncEmployeeDisciplinePermissionWorker(
             IDisciplinePermissionService disciplineService,
             ITokenService tokenService,
             ICompanyService companyService,
             List<JobSetting> jobSettings,
-            ILogger<SyncEmployeeDisciplinePermission> logfile,
+            ILogger<SyncEmployeeDisciplinePermissionWorker> logfile,
             Fanex.Logging.ILogger logger) : base(logfile, logger)
         {
             
