@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 public class WhoamiController : Controller
     {
-        [Route("whoami")]
         [AllowAnonymous]
-        public IActionResult Whoami()
+        public IActionResult Index()
         {
             var content = new StringBuilder();
             content.Append($"Web name: {HttpContext.Request.Host.Host}{Environment.NewLine}"
