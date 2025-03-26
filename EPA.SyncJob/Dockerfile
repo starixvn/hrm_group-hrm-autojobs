@@ -2,11 +2,13 @@ FROM hub.nexdev.net/base/dotnet/core/sdk:9.0-alpine AS builder
 
 WORKDIR /src
 # Copy solution and project files
+COPY ["nuget.config", "."]
 COPY EPA.SyncJob/*.csproj EPA.SyncJob/
 
 # Copy the rest of the source code
 RUN dotnet nuget add source https://nuget.nexdev.net/api/v2
 # Restore dependencies
+
 RUN dotnet restore -v n -r linux-x64 EPA.SyncJob/EPA.SyncJob.csproj
 
 # Copy source codes
