@@ -5,7 +5,7 @@ using Fanex.Logging.Sentry.RavenClient;
 using Microsoft.Extensions.Logging;
 using SharpRaven.Data.Context;
 
-var builder = Host.CreateApplicationBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
