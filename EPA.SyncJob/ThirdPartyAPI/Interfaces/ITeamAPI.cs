@@ -6,7 +6,7 @@ namespace EPA.SyncJob.ThirdPartyAPI;
 
 public interface ITeamAPI
 {
-    Task<DateTime> GetLastModifiedDate(TokenAccess token);
+    Task<DateTime> GetLastModifiedDate(TokenAccess token, ServiceAPI serviceApi);
 
-    Task<CommandResult> UpdateAsync(IEnumerable<Team> teams, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<Team> teams, TokenAccess token, ServiceAPI serviceApi);
 }

@@ -24,14 +24,14 @@
             return disciplines;
         }
 
-        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            return await disciplineSummaryApi.GetLastModifiedDateAsync(token);
+            return await disciplineSummaryApi.GetLastModifiedDateAsync(token, serviceApi);
         }
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<DisciplineSummary> disciplines, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<DisciplineSummary> disciplines, TokenAccess token, ServiceAPI serviceApi)
         {
-            return await disciplineSummaryApi.UpdateAsync(disciplines, token);
+            return await disciplineSummaryApi.UpdateAsync(disciplines, token, serviceApi);
         }
     }
 }

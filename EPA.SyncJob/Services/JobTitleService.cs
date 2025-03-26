@@ -22,9 +22,9 @@ namespace EPA.SyncJob.Services
         }
 
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token, ServiceAPI serviceApi)
         {
-            return await jobTitleApi.UpdateAsync(jobTitles, token);
+            return await jobTitleApi.UpdateAsync(jobTitles, token, serviceApi);
         }
 
     }

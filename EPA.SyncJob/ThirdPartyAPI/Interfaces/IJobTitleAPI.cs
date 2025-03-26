@@ -6,5 +6,5 @@ namespace EPA.SyncJob.ThirdPartyAPI;
 
 public interface IJobTitleAPI
 {
-    Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token, ServiceAPI serviceApi);
 }

@@ -21,14 +21,14 @@ namespace EPA.SyncJob.Services
             return jobLevel;
         }
 
-        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            return await jobLevelApi.GetLastModifiedDate(token);
+            return await jobLevelApi.GetLastModifiedDate(token, serviceApi);
         }
 
-        public Task<CommandResult> UpdateAsync(IEnumerable<JobLevel> jobLevel, TokenAccess token)
+        public Task<CommandResult> UpdateAsync(IEnumerable<JobLevel> jobLevel, TokenAccess token, ServiceAPI serviceApi)
         {
-            return jobLevelApi.UpdateAsync(jobLevel, token);
+            return jobLevelApi.UpdateAsync(jobLevel, token, serviceApi);
         }
 
     }

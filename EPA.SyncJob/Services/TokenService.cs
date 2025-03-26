@@ -1,4 +1,6 @@
 ﻿
+using EPA.SyncJob.Models;
+
 namespace EPA.SyncJob.Services
 {
     using System.Threading.Tasks;
@@ -8,9 +10,10 @@ namespace EPA.SyncJob.Services
 
     public class TokenService(ITokenAPI tokenApi) : ITokenService
     {
-        public async Task<TokenAccess> Request()
+
+        public async Task<TokenAccess> Request(ServiceAPI serviceApi)
         {
-            return await tokenApi.RequestAsync();
+            return await tokenApi.RequestAsync(serviceApi);
         }
     }
 }

@@ -9,9 +9,9 @@ public interface ITeamService
 {
     Task<IEnumerable<Team>> GetTeams(DateTime? fromDate, short companyId);
 
-    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi);
 
-    Task<CommandResult> UpdateAsync(IEnumerable<Team> teams, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<Team> teams, TokenAccess token, ServiceAPI serviceApi);
 
 
 }

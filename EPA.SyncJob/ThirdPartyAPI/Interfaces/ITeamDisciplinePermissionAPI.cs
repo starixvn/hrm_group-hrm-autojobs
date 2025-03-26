@@ -6,7 +6,7 @@ namespace EPA.SyncJob.ThirdPartyAPI;
 
 public interface ITeamDisciplinePermissionAPI
 {
-    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi);
 
-    Task<CommandResult> UpdateAsync(IEnumerable<TeamDisciplinePermission> groupSupervisors, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<TeamDisciplinePermission> groupSupervisors, TokenAccess token, ServiceAPI serviceApi);
 }

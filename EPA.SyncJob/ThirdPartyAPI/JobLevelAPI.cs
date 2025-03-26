@@ -11,17 +11,17 @@
     using Model;
     using Newtonsoft.Json;
 
-    public class JobLevelAPI(AppSettings appSettings, IHttpClientService httpClient) : IJobLevelAPI
+    public class JobLevelAPI(IHttpClientService httpClient) : IJobLevelAPI
     {
-        public async Task<DateTime> GetLastModifiedDate(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDate(TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecuteGetAsync<DateTime>(appSettings.ServiceAPI + "JobLevel", token.Value, null);
+            var result = await httpClient.ExecuteGetAsync<DateTime>(serviceApi.Domain + "JobLevel", token.Value, null);
             return result;
         }
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<JobLevel> jobLevel, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<JobLevel> jobLevel, TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "JobLevel", token.Value, JsonConvert.SerializeObject(jobLevel.ToArray()));
+            var result = await httpClient.ExecutePostAsync<CommandResult>(serviceApi.Domain + "JobLevel", token.Value, JsonConvert.SerializeObject(jobLevel.ToArray()));
             return result;
         }
     }

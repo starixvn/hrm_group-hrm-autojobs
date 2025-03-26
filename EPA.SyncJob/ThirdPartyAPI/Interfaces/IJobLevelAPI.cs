@@ -9,8 +9,8 @@
 
     public interface IJobLevelAPI
     {
-        Task<DateTime> GetLastModifiedDate(TokenAccess token);
+        Task<DateTime> GetLastModifiedDate(TokenAccess token, ServiceAPI serviceApi);
 
-        Task<CommandResult> UpdateAsync(IEnumerable<JobLevel> jobLevel, TokenAccess token);
+        Task<CommandResult> UpdateAsync(IEnumerable<JobLevel> jobLevel, TokenAccess token, ServiceAPI serviceApi);
     }
 }

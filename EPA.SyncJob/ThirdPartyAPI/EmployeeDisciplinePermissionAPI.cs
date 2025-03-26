@@ -10,17 +10,17 @@
     using Model;
     using Newtonsoft.Json;
 
-    public class EmployeeDisciplinePermissionAPI(AppSettings appSettings, IHttpClientService httpClient) : IEmployeeDisciplinePermissionAPI
+    public class EmployeeDisciplinePermissionAPI(IHttpClientService httpClient) : IEmployeeDisciplinePermissionAPI
     {
-        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecuteGetAsync<DateTime>(appSettings.ServiceAPI + "EmployeeDisciplinePermission", token.Value, null);
+            var result = await httpClient.ExecuteGetAsync<DateTime>(serviceApi.Domain + "EmployeeDisciplinePermission", token.Value, null);
             return result;
         }
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<EmployeeDisciplinePermission> employeeSupervisors, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<EmployeeDisciplinePermission> employeeSupervisors, TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "EmployeeDisciplinePermission", token.Value,
+            var result = await httpClient.ExecutePostAsync<CommandResult>(serviceApi.Domain + "EmployeeDisciplinePermission", token.Value,
                 JsonConvert.SerializeObject(employeeSupervisors.ToArray()));
             return result;
         }

@@ -19,14 +19,14 @@
             return employees;
         }
 
-        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            return await employeeApi.GetLastModifiedDateAsync(token);
+            return await employeeApi.GetLastModifiedDateAsync(token, serviceApi);
         }
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<Employee> employees, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<Employee> employees, TokenAccess token, ServiceAPI serviceApi)
         {
-            return await employeeApi.UpdateAsync(employees, token);
+            return await employeeApi.UpdateAsync(employees, token, serviceApi);
         }
     }
 }

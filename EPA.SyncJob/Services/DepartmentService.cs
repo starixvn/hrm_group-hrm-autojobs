@@ -21,17 +21,15 @@ namespace EPA.SyncJob.Services
             return departments;
         }
 
-        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            return await departmentApi.GetLastModifiedDate(token);
+            return await departmentApi.GetLastModifiedDate(token, serviceApi);
         }
 
-        public async Task<CommandResult> Update(IEnumerable<Department> departments, TokenAccess token)
+        public async Task<CommandResult> Update(IEnumerable<Department> departments, TokenAccess token, ServiceAPI serviceApi)
         {
-            return await departmentApi.UpdateAsync(departments, token);
+            return await departmentApi.UpdateAsync(departments, token, serviceApi);
         }
-
-       
 
 
     }

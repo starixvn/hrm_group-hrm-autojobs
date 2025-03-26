@@ -13,16 +13,16 @@ namespace EPA.SyncJob.ThirdPartyAPI
     
     public class TeamDisciplinePermissionAPI(AppSettings appSettings, IHttpClientService httpClient) : ITeamDisciplinePermissionAPI
     {
-        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecuteGetAsync<DateTime>(appSettings.ServiceAPI + "TeamDisciplinePermission", token.Value, null);
+            var result = await httpClient.ExecuteGetAsync<DateTime>(serviceApi.Domain + "TeamDisciplinePermission", token.Value, null);
 
             return result;
         }
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<TeamDisciplinePermission> groupSupervisors, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<TeamDisciplinePermission> groupSupervisors, TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "TeamDisciplinePermission",
+            var result = await httpClient.ExecutePostAsync<CommandResult>(serviceApi.Domain + "TeamDisciplinePermission",
                 token.Value, JsonConvert.SerializeObject(groupSupervisors.ToArray()));
 
             return result;

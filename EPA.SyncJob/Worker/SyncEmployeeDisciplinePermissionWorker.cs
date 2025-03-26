@@ -31,22 +31,22 @@ namespace EPA.SyncJob.Worker
 
         public override async Task DoWorkAsync()
         {
-            var token = await tokenService.Request();
-            if (!token.IsValid())
-            {
-                throw new InvalidOperationException("Invalid token");
-            }
-            var companyData = await companyService.GetCompanySiteByDomainAsync();
-            if (companyData == null)
-            {
-                throw new InvalidOperationException("Invalid company url");
-            }
-            var fromDate = await disciplineService.GetLastModifiedDateForEmployeeAsync(token);
-            var data= await disciplineService.GetEmployeesAsync(fromDate, companyData.CompanyId);
-            if (data.Any())
-            {
-                await disciplineService.UpdateEmployeesAsync(data, token);
-            }
+            //var token = await tokenService.Request();
+            //if (!token.IsValid())
+            //{
+            //    throw new InvalidOperationException("Invalid token");
+            //}
+            //var companyData = await companyService.GetCompanySiteByDomainAsync();
+            //if (companyData == null)
+            //{
+            //    throw new InvalidOperationException("Invalid company url");
+            //}
+            //var fromDate = await disciplineService.GetLastModifiedDateForEmployeeAsync(token);
+            //var data= await disciplineService.GetEmployeesAsync(fromDate, companyData.CompanyId);
+            //if (data.Any())
+            //{
+            //    await disciplineService.UpdateEmployeesAsync(data, token);
+            //}
         }
 
     }

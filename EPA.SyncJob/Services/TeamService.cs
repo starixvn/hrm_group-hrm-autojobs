@@ -19,14 +19,14 @@
             return teams;
         }
 
-        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            return await teamApi.GetLastModifiedDate(token);
+            return await teamApi.GetLastModifiedDate(token, serviceApi);
         }
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<Team> teams, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<Team> teams, TokenAccess token, ServiceAPI serviceApi)
         {
-            return await teamApi.UpdateAsync(teams, token);
+            return await teamApi.UpdateAsync(teams, token, serviceApi);
         }
     }
 }

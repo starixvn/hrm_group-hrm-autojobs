@@ -9,9 +9,9 @@ public interface IDisciplineSummaryService
 {
     Task<IEnumerable<DisciplineSummary>> GetDisciplineSummaryAsync(DateTime lastModifiedDate, short companyId);
 
-    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi);
 
-    Task<CommandResult> UpdateAsync(IEnumerable<DisciplineSummary> disciplines, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<DisciplineSummary> disciplines, TokenAccess token, ServiceAPI serviceApi);
 
 
 }

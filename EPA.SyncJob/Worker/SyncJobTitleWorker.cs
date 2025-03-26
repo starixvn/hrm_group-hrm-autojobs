@@ -13,12 +13,15 @@ namespace EPA.SyncJob.Worker
         private readonly IJobTitleService jobTitleService;
         private readonly ITokenService tokenService;
         private readonly ICompanyService companyService;
+        private readonly List<ServiceAPI> serviceApis;
+        private readonly ILogger<SyncJobTitleWorker> logfile;
 
         public SyncJobTitleWorker(
             IJobTitleService jobTitleService,
             ITokenService tokenService,
             ICompanyService companyService,
             List<JobSetting> jobSettings,
+            List<ServiceAPI> serviceApis,
             ILogger<SyncJobTitleWorker> logfile,
             Fanex.Logging.ILogger logger) : base(logfile, logger)
         {
@@ -27,24 +30,45 @@ namespace EPA.SyncJob.Worker
             this.jobTitleService = jobTitleService;
             this.companyService = companyService;
             this.tokenService = tokenService;
+            this.serviceApis = serviceApis;
+            this.logfile = logfile;
         }
 
         public override async Task DoWorkAsync()
         {
-            var token = await tokenService.Request();
+            var serviceApiList = serviceApis.ToList();
+            var tasks = serviceApiList.Select(async serviceApi =>
+            {
+                try
+                {
+                    await UpdateAsync(serviceApi);
+                    logfile.LogInformation($"Successful  SyncJobTitle service API: {serviceApi.Name}");
+                }
+                catch (Exception ex)
+                {
+                    logfile.LogError($"Error SyncJobTitle  service API: {serviceApi.Name} - {ex}");
+                }
+            });
+
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task UpdateAsync(ServiceAPI serviceApi)
+        {
+            var token = await tokenService.Request(serviceApi);
             if (!token.IsValid())
             {
                 throw new InvalidOperationException("Invalid token");
             }
-            var companyData = await companyService.GetCompanySiteByDomainAsync();
+            var companyData = await companyService.GetCompanySiteByDomainAsync(serviceApi.Domain);
             if (companyData == null)
             {
                 throw new InvalidOperationException("Invalid company url");
             }
-            var data= await jobTitleService.GetJobTitles(companyData.CompanyId);
+            var data = await jobTitleService.GetJobTitles(companyData.CompanyId);
             if (data.Any())
             {
-                await jobTitleService.UpdateAsync(data, token);
+                await jobTitleService.UpdateAsync(data, token, serviceApi);
             }
         }
 

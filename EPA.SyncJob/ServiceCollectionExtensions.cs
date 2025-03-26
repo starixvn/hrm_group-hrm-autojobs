@@ -30,6 +30,9 @@ public static class ServiceCollectionExtensions
         var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>();
         services.AddSingleton(appSettings);
 
+        var serviveAPIs = configuration.GetSection("ServiceAPIs").Get<List<ServiceAPI>>();
+        services.AddSingleton(serviveAPIs);
+
         var jobSettings = configuration.GetSection("JobSettings").Get<List<JobSetting>>();
         services.AddSingleton(jobSettings);
 

@@ -15,31 +15,29 @@ namespace EPA.SyncJob.ThirdPartyAPI
 
     public class TokenAPI : ITokenAPI
     {
-        private readonly AppSettings appSettings;
         private readonly IHttpClientFactory httpClientFactory;
 
-        public TokenAPI(AppSettings appSettings, IHttpClientFactory httpClientFactory)
+        public TokenAPI(IHttpClientFactory httpClientFactory)
         {
-            this.appSettings = appSettings;
             this.httpClientFactory = httpClientFactory;
         }
 
-        public async Task<TokenAccess> RequestAsync()
+        public async Task<TokenAccess> RequestAsync(ServiceAPI serviceApi)
         {
             using var client = httpClientFactory.CreateClient();
 
             var form = new Dictionary<string, string>
                 {
-                    { "grant_type", appSettings.GrantType },
-                    { "username", appSettings.ApplicationId },
-                    { "password", appSettings.ApplicationId }
+                    { "grant_type", serviceApi.GrantType },
+                    { "username", serviceApi.ApplicationId },
+                    { "password", serviceApi.ApplicationId }
                 };
 
             using (var encodedContent = new FormUrlEncodedContent(form))
             {
                 try
                 {
-                    var tokenResponse = await client.PostAsync(new Uri(appSettings.ServiceAPI + "token"), encodedContent);
+                    var tokenResponse = await client.PostAsync(new Uri(serviceApi.Domain + "token"), encodedContent);
                     tokenResponse.EnsureSuccessStatusCode();
                     var jsonResponse = await tokenResponse.Content.ReadAsStringAsync();
                     var result =  JsonConvert.DeserializeObject<TokenAccess>(jsonResponse);

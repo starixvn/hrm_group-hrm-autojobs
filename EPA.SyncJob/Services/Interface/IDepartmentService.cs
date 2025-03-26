@@ -9,5 +9,5 @@ public interface IJobTitleService
     Task<IEnumerable<JobTitle>> GetJobTitles(short companyId);
 
 
-    Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token, ServiceAPI serviceApi);
 }

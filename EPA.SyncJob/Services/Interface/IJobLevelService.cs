@@ -8,7 +8,7 @@ public interface IJobLevelService
 {
     Task<IEnumerable<JobLevel>> GetJobLevelAsync(DateTime? fromDate);
 
-    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi);
 
-    Task<CommandResult> UpdateAsync(IEnumerable<JobLevel> jobLevel, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<JobLevel> jobLevel, TokenAccess token, ServiceAPI serviceApi);
 }

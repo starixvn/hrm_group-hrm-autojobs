@@ -6,12 +6,12 @@ using Newtonsoft.Json;
 
 namespace EPA.SyncJob.ThirdPartyAPI
 {
-    public class JobTitleAPI(AppSettings appSettings, IHttpClientService httpClient) : IJobTitleAPI
+    public class JobTitleAPI(IHttpClientService httpClient) : IJobTitleAPI
     {
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<JobTitle> jobTitles, TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "JobTitle",
+            var result = await httpClient.ExecutePostAsync<CommandResult>(serviceApi.Domain + "JobTitle",
                 token.Value, JsonConvert.SerializeObject(jobTitles.ToArray()));
 
             return result;

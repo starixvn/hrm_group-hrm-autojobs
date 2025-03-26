@@ -6,7 +6,7 @@ namespace EPA.SyncJob.ThirdPartyAPI;
 
 public interface IDisciplineSummaryAPI
 {
-    Task<CommandResult> UpdateAsync(IEnumerable<DisciplineSummary> disciplines, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<DisciplineSummary> disciplines, TokenAccess token, ServiceAPI serviceApi);
 
-    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi);
 }

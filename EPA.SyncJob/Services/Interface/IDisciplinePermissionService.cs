@@ -11,11 +11,11 @@ public interface IDisciplinePermissionService
 
     Task<IEnumerable<TeamDisciplinePermission>> GetGroupsSync(DateTime fromDate, short companyId);
 
-    Task<CommandResult> UpdateEmployeesAsync(IEnumerable<EmployeeDisciplinePermission> employees, TokenAccess token);
+    Task<CommandResult> UpdateEmployeesAsync(IEnumerable<EmployeeDisciplinePermission> employees, TokenAccess token, ServiceAPI serviceApi);
 
-    Task<CommandResult> UpdateGroupsAsync(IEnumerable<TeamDisciplinePermission> groups, TokenAccess token);
+    Task<CommandResult> UpdateGroupsAsync(IEnumerable<TeamDisciplinePermission> groups, TokenAccess token, ServiceAPI serviceApi);
 
-    Task<DateTime> GetLastModifiedDateForEmployeeAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateForEmployeeAsync(TokenAccess token, ServiceAPI serviceApi);
 
-    Task<DateTime> GetLastModifiedDateForGroupAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateForGroupAsync(TokenAccess token, ServiceAPI serviceApi);
 }

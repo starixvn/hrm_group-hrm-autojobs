@@ -8,7 +8,7 @@ public interface IDepartmentService
 {
     Task<IEnumerable<Department>> GetDepartments(DateTime? fromDate, short companyId);
 
-    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi);
 
-    Task<CommandResult> Update(IEnumerable<Department> departments, TokenAccess token);
+    Task<CommandResult> Update(IEnumerable<Department> departments, TokenAccess token, ServiceAPI serviceApi);
 }

@@ -5,7 +5,7 @@ namespace EPA.SyncJob.Services.Interfaces;
 
 public interface ICompanyService
 {
-    Task<CompanySite> GetCompanySiteByDomainAsync();
+    Task<CompanySite> GetCompanySiteByDomainAsync(string domain);
 
 
 }

@@ -10,17 +10,17 @@
     using Model;
     using Newtonsoft.Json;
 
-    public class EmployeeAPI(AppSettings appSettings, IHttpClientService httpClient) : IEmployeeAPI
+    public class EmployeeAPI(IHttpClientService httpClient) : IEmployeeAPI
     {
-        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecuteGetAsync<DateTime>(appSettings.ServiceAPI + "Employee", token.Value, null);
+            var result = await httpClient.ExecuteGetAsync<DateTime>(serviceApi.Domain + "Employee", token.Value, null);
             return result;
         }
 
-        public async Task<CommandResult> UpdateAsync(IEnumerable<Employee> employees, TokenAccess token)
+        public async Task<CommandResult> UpdateAsync(IEnumerable<Employee> employees, TokenAccess token, ServiceAPI serviceApi)
         {
-            var result = await httpClient.ExecutePostAsync<CommandResult>(appSettings.ServiceAPI + "Employee", token.Value, JsonConvert.SerializeObject(employees.ToArray()));
+            var result = await httpClient.ExecutePostAsync<CommandResult>(serviceApi.Domain + "Employee", token.Value, JsonConvert.SerializeObject(employees.ToArray()));
             return result;
         }
     }

@@ -7,13 +7,13 @@ namespace EPA.SyncJob.Services
     using EPA.SyncJob.Services.Interfaces;
     using Microsoft.AspNetCore.Http;
 
-    public class CompanyService(IBaseService baseService, AppSettings appSettings) : ICompanyService
+    public class CompanyService(IBaseService baseService) : ICompanyService
     {
-        public async Task<CompanySite> GetCompanySiteByDomainAsync()
+        public async Task<CompanySite> GetCompanySiteByDomainAsync(string domain)
         {
             var criteria = new GetCompanySiteByDomainCriteria
             {
-                Domain = appSettings.ServiceAPI.TrimEnd('/')
+                Domain = domain.TrimEnd('/')
             };
             return await baseService.GetDataEntityAsync<CompanySite>(criteria);
         }

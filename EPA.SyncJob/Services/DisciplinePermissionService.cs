@@ -30,24 +30,24 @@
             return groupSupervisors;
         }
 
-        public async Task<CommandResult> UpdateEmployeesAsync(IEnumerable<EmployeeDisciplinePermission> employees, TokenAccess token)
+        public async Task<CommandResult> UpdateEmployeesAsync(IEnumerable<EmployeeDisciplinePermission> employees, TokenAccess token, ServiceAPI serviceApi)
         {
-            return await employeeSupervisorApi.UpdateAsync(employees, token);
+            return await employeeSupervisorApi.UpdateAsync(employees, token, serviceApi);
         }
 
-        public async Task<CommandResult> UpdateGroupsAsync(IEnumerable<TeamDisciplinePermission> groups, TokenAccess token)
+        public async Task<CommandResult> UpdateGroupsAsync(IEnumerable<TeamDisciplinePermission> groups, TokenAccess token, ServiceAPI serviceApi)
         {
-            return await teamSupervisorApi.UpdateAsync(groups, token);
+            return await teamSupervisorApi.UpdateAsync(groups, token, serviceApi);
         }
 
-        public async Task<DateTime> GetLastModifiedDateForEmployeeAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateForEmployeeAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            return await employeeSupervisorApi.GetLastModifiedDateAsync(token);
+            return await employeeSupervisorApi.GetLastModifiedDateAsync(token, serviceApi);
         }
 
-        public async Task<DateTime> GetLastModifiedDateForGroupAsync(TokenAccess token)
+        public async Task<DateTime> GetLastModifiedDateForGroupAsync(TokenAccess token, ServiceAPI serviceApi)
         {
-            return await teamSupervisorApi.GetLastModifiedDateAsync(token);
+            return await teamSupervisorApi.GetLastModifiedDateAsync(token, serviceApi);
         }
     }
 }

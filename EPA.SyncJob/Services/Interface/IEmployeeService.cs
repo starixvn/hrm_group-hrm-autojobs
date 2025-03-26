@@ -8,9 +8,9 @@ public interface IEmployeeService
 {
     Task<IEnumerable<Employee>> GetEmployeesAsync(DateTime? fromDate, short companyId);
 
-    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token);
+    Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi);
 
-    Task<CommandResult> UpdateAsync(IEnumerable<Employee> employees, TokenAccess token);
+    Task<CommandResult> UpdateAsync(IEnumerable<Employee> employees, TokenAccess token, ServiceAPI serviceApi);
 
 
 }
