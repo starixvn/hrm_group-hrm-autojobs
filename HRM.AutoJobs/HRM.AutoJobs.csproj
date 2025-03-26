@@ -8,7 +8,6 @@
   <ItemGroup>
     <PackageReference Include="Cronos" Version="0.9.0" />
     <PackageReference Include="Fanex.Caching.Redis" Version="2.2.8" />
-    <PackageReference Include="Fanex.Data.SqlServer" Version="4.3.3" />
     <PackageReference Include="Fanex.Logging.Sentry.RavenClient" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.3" />
@@ -20,5 +19,17 @@
   <ItemGroup>
     <ProjectReference Include="..\src\HRM.Job\HRM.Job.csproj" />
     <ProjectReference Include="..\src\HRM.LetStalk.Core\HRM.LetStalk.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App_Data\SpNames.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailTemplates\RemindUseAL.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="EmailTemplates\StatisticALBalance.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

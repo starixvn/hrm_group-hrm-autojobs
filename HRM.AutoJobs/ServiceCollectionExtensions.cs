@@ -91,5 +91,6 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<InsertALBalanceForNextYearWorker>();
         services.AddHostedService<InsertALBalanceForNewEmployeeWorker>();
         services.AddHostedService<RemindUsedALWorker>();
+        services.AddHostedService<UpdateWorkingHourPerDayWorker>();
     }
 }

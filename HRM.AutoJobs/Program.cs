@@ -1,3 +1,4 @@
+using Fanex.Data.SqlServer;
 using Fanex.Logging.Sentry.RavenClient;
 using HRM.AutoJobs;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ var configuration = builder.Configuration;
 services.AddHostedService<Worker>();
 services.AddHttpClient();
 services.AddCoreServices();
+services.AddFanexSql(configuration);
 services.ConfigureAppSettings(configuration);
 services.AddFanexLogSentry(configuration);
 //services.AddRedis(configuration);
