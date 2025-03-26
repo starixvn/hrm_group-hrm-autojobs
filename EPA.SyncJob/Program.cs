@@ -17,6 +17,14 @@ services.AddFanexSql(configuration);
 services.AddJobsServices();
 
 
+var app = builder.Build();
+app.Run(async context =>
+{
+    var request = context.Request.Path.HasValue
+        ? context.Request.Path.Value
+        : string.Empty;
 
-var host = builder.Build();
-await host.RunAsync();
+    await context.Response.WriteAsync($"EPA Auto Jobs. Request Path = {request}");
+});
+
+await app.RunAsync();
