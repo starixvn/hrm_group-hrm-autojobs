@@ -20,7 +20,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseMiddleware<ErrorHandler>();
-    app.UseHsts();
 }
 app.Run(async context =>
 {
