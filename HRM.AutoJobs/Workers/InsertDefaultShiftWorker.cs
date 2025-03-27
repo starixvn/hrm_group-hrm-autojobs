@@ -25,7 +25,7 @@ public class InsertDefaultShiftWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        if (DateTimeOffset.UtcNow.DayOfWeek == DayOfWeek.Friday)
+        //if (DateTimeOffset.UtcNow.DayOfWeek == DayOfWeek.Friday)
         {
             foreach (var companyId in jobSetting.CompanyIds)
             {

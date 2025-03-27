@@ -72,7 +72,7 @@ public static class ServiceCollectionExtensions
         services.AddSession(options =>
         {
             options.Cookie.IsEssential = true;
-            options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(configuration.GetSection("AuthSettings:SessionTimeOut").Value));
+            options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(configuration.GetSection("AuthSettings:SessionTimeOut").Value ?? string.Empty));
             options.Cookie.Name = "HRM.Website.Session";
         });
 
@@ -83,11 +83,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddHostedService<SyncTimeRecordWorker>();
         services.AddHostedService<InsertHolidayInYearWorker>();
-
         services.AddHostedService<PublicScheduleWorker>();
         services.AddHostedService<InsertDefaultShiftWorker>();
         services.AddHostedService<InsertWeeklyDefaultShiftWorker>();
-
         services.AddHostedService<InsertALBalanceForNextYearWorker>();
         services.AddHostedService<InsertALBalanceForNewEmployeeWorker>();
         services.AddHostedService<RemindUsedALWorker>();
