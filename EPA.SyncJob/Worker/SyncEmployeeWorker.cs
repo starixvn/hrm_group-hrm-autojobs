@@ -15,6 +15,7 @@ namespace EPA.SyncJob.Worker
         private readonly ICompanyService companyService;
         private readonly List<ServiceAPI> serviceApis;
         private readonly ILogger<SyncEmployeeWorker> logfile;
+        private Fanex.Logging.ILogger logger;
 
         public SyncEmployeeWorker(
             IEmployeeService employeeService,
@@ -32,6 +33,7 @@ namespace EPA.SyncJob.Worker
             this.tokenService = tokenService;
             this.serviceApis = serviceApis;
             this.logfile = logfile;
+            this.logger = logger;
         }
 
         public override async Task DoWorkAsync()
@@ -46,6 +48,7 @@ namespace EPA.SyncJob.Worker
                 }
                 catch (Exception ex)
                 {
+                    await logger.ErrorAsync($"Error SyncEmployee service API: {serviceApi.Name} - {ex}");
                     logfile.LogError($"Error SyncEmployee service API: {serviceApi.Name} - {ex}");
                 }
             });
