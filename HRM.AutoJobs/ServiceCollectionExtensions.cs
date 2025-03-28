@@ -36,9 +36,6 @@ public static class ServiceCollectionExtensions
 
     public static void ConfigureAppSettings(this IServiceCollection services, IConfiguration configuration)
     {
-        var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>();
-        services.AddSingleton(appSettings);
-
         var letStalkSettings = configuration.GetSection("LetStalkSettings").Get<LetStalkSettings>();
         services.AddSingleton(letStalkSettings);
 

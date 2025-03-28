@@ -58,6 +58,8 @@ public class AnnualLeaveBalanceService(
         var (employees, supervisors, statistics) = await baseService.FetchMultipleAsync<AnnualLeaveBalance, EmployeeSupervisor, SectionStatisticAnnualLeave>(criteria);
         var bodyTemplate = ReadTextFile(Path.Combine(hostEnvironment.ContentRootPath, RemindUseALTemplatePath));
         var validEmployees = new List<AnnualLeaveBalance>();
+        var mailConfig = await mailService.GetMailConfigAsync(companyId);
+        var mailSetting = await mailService.GetMailSettingByIdAsync(mailConfig?.AppMailId ?? 0);
 
         foreach (var employee in employees)
         {
@@ -83,11 +85,12 @@ public class AnnualLeaveBalanceService(
                     MailTo = employee.Email,
                     MailCc = string.Empty,
                     Subject = "Annual Leave Balance Reminder",
-                    Body = body
+                    Body = body,
+                    MailSetting = mailSetting
                 };
 
-                //var thread = new Thread(() => SendEmailAsync(mailItem).GetAwaiter().GetResult());
-                //thread.Start();
+                var thread = new Thread(() => SendEmailAsync(mailItem).GetAwaiter().GetResult());
+                thread.Start();
             }
 
             var letStalkThread = new Thread(() => SendLetStalkNotificationAsync(employee.LetStalk, "Annual Leave Balance Reminder", body).GetAwaiter().GetResult());
@@ -163,8 +166,8 @@ public class AnnualLeaveBalanceService(
                     Subject = "Department / Section Annual Leave Balance Reminder",
                     Body = body
                 };
-                //var thread = new Thread(async () => await SendEmailAsync(mailItem));
-                //thread.Start();
+                var thread = new Thread(async () => await SendEmailAsync(mailItem));
+                thread.Start();
             }
         }
     }

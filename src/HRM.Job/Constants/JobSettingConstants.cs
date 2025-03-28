@@ -14,4 +14,5 @@ public static class JobSettingConstants
     public const string InsertALBalanceForNextYear = "InsertALBalanceForNextYear";
     public const string InsertALBalanceForNewEmployee = "InsertALBalanceForNewEmployee";
     public const string RemindUsedAL = "RemindUsedAL";
+    public const string MailSetting = "MailSetting";
 }

@@ -3,30 +3,43 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Security;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using HRM.Job.Constants;
 using HRM.Job.Criteria.MailDeliver;
 using HRM.Job.Models;
 using HRM.Job.Models.MailDeliver;
 using HRM.Job.Services.Interfaces;
-using MailKit.Net.Smtp;
 using MimeKit;
+using Newtonsoft.Json;
 
 namespace HRM.Job.Services;
 
 public class BaseMailService(
-    AppSettings appSettings,
     IBaseService baseService) : IBaseMailService
 {
+    public async Task<MailConfig> GetMailConfigAsync(short companyId)
+    {
+        var criteria = new GetSystemConfigsByKeyCriteria
+        {
+            CompanyId = companyId,
+            Key = JobSettingConstants.MailSetting
+        };
+
+        var result = await baseService.GetDataEntityAsync<string>(criteria);
+        var data = result == null ? null : JsonConvert.DeserializeObject<MailConfig>(result);
+
+        return data;
+    }
+
+
     public async Task<bool> SendEmailAsync(MailRecord email)
     {
         var isSuccessful = false;
-        if (appSettings.EnableSendMail && email != null && IsValidEmail(email.MailTo))
+        if (email != null && IsValidEmail(email.MailTo))
         {
-            email.MailSetting = await GetMailSettingByIdAsync(appSettings.AppMailId);
             await InsertMailRecordAsync(email);
             isSuccessful = await SendAsync(email);
         }
@@ -204,7 +217,7 @@ public class BaseMailService(
         return message;
     }
 
-    private async Task<MailSetting> GetMailSettingByIdAsync(int appId)
+    public async Task<MailSetting> GetMailSettingByIdAsync(int appId)
     {
         var criteria = new GetMailSettingByIdCriteria
         {

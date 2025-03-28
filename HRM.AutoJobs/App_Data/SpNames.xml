@@ -19,6 +19,7 @@
         <Setting Key="MailRecorder_InsError" SpName="MailRecorder_InsError" DbName="bodb_HRM" />
         <Setting Key="MailRecorder_InsRecord" SpName="MailRecorder_InsRecord" DbName="bodb_HRM" />
         <Setting Key="MailRecorder_UpdateMailStatus" SpName="MailRecorder_UpdateMailStatus" DbName="bodb_HRM" />
+        <Setting Key="SystemConfigs_GetByKey" SpName="SystemConfigs_GetByKey" DbName="bodb_HRM" />
     </Function>
     <Function Name="Sync Data">
         <Setting Key="Sync_WorkingShift_GetLastModifiedDate" SpName="Sync_WorkingShift_GetLastModifiedDate" DbName="bodb_HRM" Plain="0" />
