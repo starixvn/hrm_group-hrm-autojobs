@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Job.Constants;
 using Job.Helpers;
@@ -25,9 +26,11 @@ public class RemindUsedALWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        var months = new[] { 3, 6, 9, 12 };
+        var months = new[] { 2, 5, 8, 11 };
         var today = DateTimeOffset.UtcNow;
-        //if (today.Day == 1 && Array.Exists(months, x => x == today.Month))
+        var lastDay = DateTime.DaysInMonth(today.Year, today.Month);
+
+        if (today.Day == lastDay && months.Contains(today.Month))
         {
             foreach (var companyId in jobSetting.CompanyIds)
             {

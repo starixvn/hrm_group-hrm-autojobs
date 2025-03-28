@@ -25,9 +25,11 @@ public class InsertHolidayInYearWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        const byte September = 9;
+        const byte August = 8;
         var today = DateTimeOffset.UtcNow;
-        if (today is { Day: 1, Month: September })
+        var lastDay = DateTime.DaysInMonth(today.Year, today.Month);
+
+        if (today.Day == lastDay && today.Month == August)
         {
             foreach (var companyId in jobSetting.CompanyIds)
             {

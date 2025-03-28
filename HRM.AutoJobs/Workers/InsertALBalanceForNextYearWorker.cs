@@ -8,6 +8,7 @@ using Job.Constants;
 using Job.Helpers;
 using Job.Models;
 using Job.Services.Interfaces;
+using System.Linq;
 
 public class InsertALBalanceForNextYearWorker : BaseWorker
 {
@@ -25,11 +26,11 @@ public class InsertALBalanceForNextYearWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        const byte September = 9;
-        const byte December = 12;
         var today = DateTimeOffset.UtcNow;
-        if (today is { Day: 1, Month: September }
-            || (today.Day == DateTime.DaysInMonth(today.Year, today.Month) && today.Month == December))
+        var lastDay = DateTime.DaysInMonth(today.Year, today.Month);
+        var lastDayMonths = new[] { 8, 11 };
+
+        if (today.Day == lastDay && lastDayMonths.Contains(today.Month))
         {
             foreach (var companyId in jobSetting.CompanyIds)
             {
