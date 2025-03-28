@@ -38,7 +38,6 @@ public class BaseWorker(ILogger<BaseWorker> logfile, Fanex.Logging.ILogger logge
     {
         try
         {
-            await logger.ErrorAsync($"{jobSetting.JobName} Test Sentry");
             if (jobSetting.Enabled)
             {
                 logfile.LogInformation($"{jobSetting.JobName}: Doing...");
