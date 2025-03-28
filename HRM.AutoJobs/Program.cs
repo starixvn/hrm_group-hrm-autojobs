@@ -1,9 +1,11 @@
 using Fanex.Data.SqlServer;
 using Fanex.Logging.Sentry.RavenClient;
 using HRM.AutoJobs;
+using HRM.AutoJobs.Middlewares;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -15,11 +17,18 @@ services.AddCoreServices();
 services.AddFanexSql(configuration);
 services.ConfigureAppSettings(configuration);
 services.AddFanexLogSentry(configuration);
-//services.AddRedis(configuration);
-//services.AddRedisSession(configuration);
+services.AddRedis(configuration);
+services.AddRedisSession(configuration);
 services.AddJobsServices();
 
 var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseMiddleware<ErrorHandler>();
+    app.UseHsts();
+}
+
 app.Run(async context =>
 {
     var request = context.Request.Path.HasValue
