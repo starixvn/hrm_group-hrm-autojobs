@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Fanex.Logging;
+﻿using Fanex.Logging;
 using Fanex.Caching.Redis;
 using Fanex.Data.Repository;
-using Fanex.Logging;
-using EPA.SyncJob.Workers;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using ILogger = Fanex.Logging.ILogger;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
 using EPA.SyncJob.Services.Interfaces;
 using EPA.SyncJob.Services;
 using EPA.SyncJob.Worker;
 using EPA.SyncJob.Models;
 using EPA.SyncJob.ThirdPartyAPI;
 using EPA.SyncJob.Services.Interface;
-using EPA.SyncJob.ThirdPartyAPI;
 
 namespace EPA.SyncJob;
 

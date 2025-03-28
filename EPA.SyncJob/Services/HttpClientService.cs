@@ -2,15 +2,13 @@
 namespace EPA.SyncJob.Services;
 
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EPA.SyncJob.Models;
-using EPA.SyncJob.Services.Interface;
+using Interface;
 using Newtonsoft.Json;
 
 #pragma warning disable S4462 // Calls to "async" methods should not be blocking

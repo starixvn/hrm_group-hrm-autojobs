@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using HRM.Job.Criteria;
 using HRM.Job.Models;
@@ -89,18 +88,16 @@ public class AnnualLeaveBalanceService(
                     MailSetting = mailSetting
                 };
 
-                var thread = new Thread(() => SendEmailAsync(mailItem).GetAwaiter().GetResult());
-                thread.Start();
+                await Task.Run(async () => await SendEmailAsync(mailItem));
             }
 
-            var letStalkThread = new Thread(() => SendLetStalkNotificationAsync(employee.LetStalk, "Annual Leave Balance Reminder", body).GetAwaiter().GetResult());
-            letStalkThread.Start();
+            await Task.Run(async () => await SendLetStalkNotificationAsync(employee.LetStalk, "Annual Leave Balance Reminder", body));
         }
 
-        SendMailStatisticAnnualLeave(validEmployees, supervisors, statistics.ToList());
+        await SendMailStatisticAnnualLeave(validEmployees, supervisors, statistics.ToList());
     }
 
-    private void SendMailStatisticAnnualLeave(
+    private Task SendMailStatisticAnnualLeave(
         List<AnnualLeaveBalance> validEmployees,
         IEnumerable<EmployeeSupervisor> supervisors,
         List<SectionStatisticAnnualLeave> statistics)
@@ -166,10 +163,12 @@ public class AnnualLeaveBalanceService(
                     Subject = "Department / Section Annual Leave Balance Reminder",
                     Body = body
                 };
-                var thread = new Thread(async () => await SendEmailAsync(mailItem));
-                thread.Start();
+
+                Task.Run(async () => await SendEmailAsync(mailItem));
             }
         }
+
+        return Task.CompletedTask;
     }
 
     private async Task SendEmailAsync(MailRecord mailRecord)

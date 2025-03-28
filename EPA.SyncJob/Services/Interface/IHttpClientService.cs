@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace EPA.SyncJob.Services.Interface;
+﻿namespace EPA.SyncJob.Services.Interface;
 
 public interface IHttpClientService
 {

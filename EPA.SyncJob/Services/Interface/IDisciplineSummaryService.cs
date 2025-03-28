@@ -1,7 +1,6 @@
 ﻿using EPA.SyncJob.Model;
 using EPA.SyncJob.Model.API;
 using EPA.SyncJob.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace EPA.SyncJob.Services.Interface;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -11,10 +12,10 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            //if (logger.IsEnabled(LogLevel.Information))
-            //{
-            //    logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            //}
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            }
             await Task.Delay(1000, stoppingToken);
         }
     }

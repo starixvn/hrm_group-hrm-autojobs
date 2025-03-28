@@ -1,10 +1,5 @@
 ﻿namespace EPA.SyncJob.Helpers;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fanex.Logging;
-using Models;
 using Newtonsoft.Json.Linq;
 
 public static class ApiHelper

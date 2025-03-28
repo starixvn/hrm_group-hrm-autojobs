@@ -3,7 +3,6 @@ namespace EPA.SyncJob.Controller;
 
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 public class WhoamiController : Controller

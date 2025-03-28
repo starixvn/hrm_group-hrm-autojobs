@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Cronos;
-using EPA.SyncJob.Models;
+using Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

@@ -4,7 +4,6 @@ using EPA.SyncJob.Models;
 using EPA.SyncJob.Services.Interface;
 using EPA.SyncJob.Services.Interfaces;
 using EPA.SyncJob.Workers;
-using Microsoft.Extensions.Logging;
 
 namespace EPA.SyncJob.Worker
 {

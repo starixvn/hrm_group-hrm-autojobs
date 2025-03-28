@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using EPA.SyncJob.Model.API;
-    using EPA.SyncJob.Models;
+    using Model.API;
+    using Models;
     using Model;
 
     public interface IDepartmentAPI

@@ -4,12 +4,12 @@ using EPA.SyncJob.ThirdPartyAPI;
 
 namespace EPA.SyncJob.Services
 {
-    using EPA.SyncJob.Criteria;
-    using EPA.SyncJob.Model;
-    using EPA.SyncJob.Model.API;
-    using EPA.SyncJob.Models;
-    using EPA.SyncJob.Services.Interface;
-    using EPA.SyncJob.Services.Interfaces;
+    using Criteria;
+    using Model;
+    using Model.API;
+    using Models;
+    using Interface;
+    using Interfaces;
 
     public class JobTitleService(IBaseService baseService, IJobTitleAPI jobTitleApi) : IJobTitleService
     {

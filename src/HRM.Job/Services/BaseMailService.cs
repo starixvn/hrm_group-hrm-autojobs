@@ -102,7 +102,7 @@ public class BaseMailService(
                 msg.BodyEncoding = Encoding.UTF8;
                 msg.Priority = MailPriority.Normal;
 
-                var client = new System.Net.Mail.SmtpClient
+                var client = new SmtpClient
                 {
                     Port = email.MailSetting.Port,
                     Host = email.MailSetting.Server

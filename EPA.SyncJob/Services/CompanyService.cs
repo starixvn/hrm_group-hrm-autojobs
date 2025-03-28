@@ -1,11 +1,8 @@
-﻿using EPA.SyncJob.Models;
-
-namespace EPA.SyncJob.Services
+﻿namespace EPA.SyncJob.Services
 {
-    using EPA.SyncJob.Criteria;
-    using EPA.SyncJob.Model;
-    using EPA.SyncJob.Services.Interfaces;
-    using Microsoft.AspNetCore.Http;
+    using Criteria;
+    using Model;
+    using Interfaces;
 
     public class CompanyService(IBaseService baseService) : ICompanyService
     {

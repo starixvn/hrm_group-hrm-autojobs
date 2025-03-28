@@ -1,6 +1,5 @@
 ﻿namespace EPA.SyncJob.Criteria
 {
-    using System;
     using Fanex.Data.Repository;
 
     public class GetCompanySiteByDomainCriteria : CriteriaBase

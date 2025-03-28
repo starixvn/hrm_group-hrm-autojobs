@@ -4,7 +4,7 @@ using EPA.SyncJob.Models;
 namespace EPA.SyncJob.Services
 {
     using System.Threading.Tasks;
-    using EPA.SyncJob.Services.Interfaces;
+    using Interfaces;
     using Model;
     using ThirdPartyAPI;
 

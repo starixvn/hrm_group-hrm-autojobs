@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using EPA.SyncJob.Model.API;
-    using EPA.SyncJob.Models;
-    using EPA.SyncJob.Services.Interface;
+    using Model.API;
+    using Models;
+    using Services.Interface;
     using Model;
     using Newtonsoft.Json;
 
