@@ -34,7 +34,7 @@ public class TimeRecordService(
     {
         var toDate = DateTimeOffset.Now.DateTime.ToClientTimeZone(8);
         var fromDate = toDate.AddHours(-12);
-        var url = new Uri($"{setting.Url}?fromDate={fromDate:yyyy-MM-dd mm:HH:ss}&toDate={toDate:yyyy-MM-dd mm:HH:ss}");
+        var url = new Uri($"{setting.Url}?fromDate={fromDate:yyyy-MM-dd HH:mm:ss}&toDate={toDate:yyyy-MM-dd HH:mm:ss}");
         var httpClient = clientFactory.CreateClient();
 
         if (!string.IsNullOrWhiteSpace(setting.ApiKey))
@@ -44,6 +44,8 @@ public class TimeRecordService(
 
         try
         {
+            await logger.InfoAsync($"Sync time record: {url}");
+
             var response = await httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
