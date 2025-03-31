@@ -1,5 +1,4 @@
-﻿
-namespace EPA.SyncJob.Services;
+﻿namespace EPA.SyncJob.Services;
 
 using System;
 using System.Net;
@@ -12,6 +11,7 @@ using Interface;
 using Newtonsoft.Json;
 
 #pragma warning disable S4462 // Calls to "async" methods should not be blocking
+
 public class HttpClientService : IHttpClientService
 {
     private static readonly HttpClient httpClient = new();
@@ -43,7 +43,7 @@ public class HttpClientService : IHttpClientService
         ThrowExceptionWhenNotSuccess(response);
         if (response.IsSuccessStatusCode)
         {
-           var responseData = await response.Content.ReadAsStringAsync();
+            var responseData = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrEmpty(responseData))
             {
                 return new T();

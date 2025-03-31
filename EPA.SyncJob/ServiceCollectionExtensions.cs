@@ -1,15 +1,12 @@
-﻿using Fanex.Logging;
-using Fanex.Caching.Redis;
-using Fanex.Data.Repository;
-using Microsoft.AspNetCore.DataProtection;
-using StackExchange.Redis;
-using ILogger = Fanex.Logging.ILogger;
-using EPA.SyncJob.Services.Interfaces;
+﻿using EPA.SyncJob.Models;
 using EPA.SyncJob.Services;
-using EPA.SyncJob.Worker;
-using EPA.SyncJob.Models;
-using EPA.SyncJob.ThirdPartyAPI;
 using EPA.SyncJob.Services.Interface;
+using EPA.SyncJob.Services.Interfaces;
+using EPA.SyncJob.ThirdPartyAPI;
+using EPA.SyncJob.Worker;
+using Fanex.Data.Repository;
+using Fanex.Logging;
+using ILogger = Fanex.Logging.ILogger;
 
 namespace EPA.SyncJob;
 
@@ -52,39 +49,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IHttpClientService, HttpClientService>();
 
         services.AddHttpClient();
-
-
-        return services;
-    }
-
-    public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddRedisCache(configuration.GetSection("fanex.caching.redis"));
-
-        var redisConfig = configuration.GetSection("AuthSettings:RedisConfig").Value;
-        var redisMultiplexer = ConnectionMultiplexer.Connect(redisConfig);
-
-        services.AddDataProtection().PersistKeysToStackExchangeRedis(redisMultiplexer, "HRM.Website:ProtectionKeys");
-
-        services.AddSingleton(redisMultiplexer);
-
-        services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = redisConfig;
-            options.InstanceName = "EPA.sync.Website:Session:";
-        });
-
-        return services;
-    }
-
-    public static IServiceCollection AddRedisSession(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddSession(options =>
-        {
-            options.Cookie.IsEssential = true;
-            options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(configuration.GetSection("AuthSettings:SessionTimeOut").Value));
-            options.Cookie.Name = "EPA.Sync.Session";
-        });
 
         return services;
     }

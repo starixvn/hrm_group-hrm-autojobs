@@ -11,10 +11,7 @@ services.AddCoreServices(configuration);
 services.AddFanexLogSentry(configuration);
 services.AddFanexSql(configuration);
 
-//services.AddRedis(configuration);
-//services.AddRedisSession(configuration);
 services.AddJobsServices();
-
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
