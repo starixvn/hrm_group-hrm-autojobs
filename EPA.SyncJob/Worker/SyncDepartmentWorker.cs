@@ -61,13 +61,8 @@ namespace EPA.SyncJob.Worker
             {
                 throw new InvalidOperationException("Invalid token");
             }
-            var companyData = await companyService.GetCompanySiteByDomainAsync(serviceApi.Domain);
-            if (companyData == null)
-            {
-                throw new InvalidOperationException("Invalid company url");
-            }
             var fromDate = await departmentService.GetLastModifiedDateAsync(token, serviceApi);
-            var departments = await departmentService.GetDepartments(fromDate, companyData.CompanyId);
+            var departments = await departmentService.GetDepartments(fromDate, serviceApi.CompanyId);
             if (departments.Any())
             {
                 await departmentService.Update(departments, token, serviceApi);
