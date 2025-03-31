@@ -32,9 +32,9 @@ public class TimeRecordService(
 
     public async Task GetTimeRecordAsync(TimeRecordApiSetting setting)
     {
-        var toDate = DateTimeOffset.Now.DateTime;
-        var fromDate = toDate.Date;
-        var url = new Uri($"{setting.Url}?fromDate={fromDate:yyyy-MM-dd}&toDate={toDate:yyyy-MM-dd mm:HH:ss}");
+        var toDate = DateTimeOffset.Now.DateTime.ToClientTimeZone(8);
+        var fromDate = toDate.AddHours(-12);
+        var url = new Uri($"{setting.Url}?fromDate={fromDate:yyyy-MM-dd mm:HH:ss}&toDate={toDate:yyyy-MM-dd mm:HH:ss}");
         var httpClient = clientFactory.CreateClient();
 
         if (!string.IsNullOrWhiteSpace(setting.ApiKey))
