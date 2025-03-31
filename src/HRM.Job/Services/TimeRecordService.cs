@@ -42,20 +42,27 @@ public class TimeRecordService(
             httpClient.DefaultRequestHeaders.Add("X-API-Key", setting.ApiKey);
         }
 
-        var response = await httpClient.GetAsync(url);
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var rawData = await response.Content.ReadAsStringAsync();
-            var records = JsonConvert.DeserializeObject<IList<TimeRecordAPI>>(rawData);
-            if (records != null && records.Any())
+            var response = await httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
             {
-                await ImportTimeRecordAsync(fromDate, toDate, records);
+                var rawData = await response.Content.ReadAsStringAsync();
+                var records = JsonConvert.DeserializeObject<IList<TimeRecordAPI>>(rawData);
+                if (records != null && records.Any())
+                {
+                    await ImportTimeRecordAsync(fromDate, toDate, records);
+                }
+            }
+            else
+            {
+                var message = await response.Content.ReadAsStringAsync();
+                await logger.ErrorAsync($"Sync time record, StatusCode: {response.StatusCode}\r\nMessage: {message}");
             }
         }
-        else
+        catch (Exception ex)
         {
-            var message = await response.Content.ReadAsStringAsync();
-            await logger.ErrorAsync($"Sync time record, StatusCode: {response.StatusCode}\r\nMessage: {message}");
+            await logger.ErrorAsync(ex.Message, ex);
         }
     }
 
@@ -65,25 +72,26 @@ public class TimeRecordService(
         foreach (var record in recordsByCompany)
         {
             var company = TimeRecordApiConstant.CompanyDict.GetValueOrDefault(record.Key);
-            if (company != default)
+            if (company == default)
             {
-                var (companyId, clientTimeZone) = company;
-                var timeRecords = record.ToList();
-                foreach (var timeRecord in timeRecords)
-                {
-                    timeRecord.RecordTime = timeRecord.RecordTime.ToServerTimeZone(clientTimeZone);
-                }
-
-                var command = new ImportTimeRecordCommand
-                {
-                    CompanyId = companyId,
-                    FromDate = fromDate,
-                    ToDate = toDate,
-                    TimeRecordXml = timeRecords.ToXML().ToString()
-                };
-                var thread = new Thread(() => baseService.ExecuteNonQueryAsync(command));
-                thread.Start();
+                continue;
             }
+
+            var (companyId, clientTimeZone) = company;
+            var timeRecords = record.ToList();
+            foreach (var timeRecord in timeRecords)
+            {
+                timeRecord.RecordTime = timeRecord.RecordTime.ToServerTimeZone(clientTimeZone);
+            }
+
+            var command = new ImportTimeRecordCommand
+            {
+                CompanyId = companyId,
+                FromDate = fromDate,
+                ToDate = toDate,
+                TimeRecordXml = timeRecords.ToXML().ToString()
+            };
+            await baseService.ExecuteNonQueryAsync(command);
         }
     }
 }
