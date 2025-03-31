@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HRM.Job.Criteria;
+using HRM.Job.Extensions;
 using HRM.Job.Models;
 using HRM.Job.Models.MailDeliver;
 using HRM.Job.Services.Interfaces;
@@ -232,7 +233,7 @@ public class AnnualLeaveBalanceService(
         const byte TwentyFive = 25;
         const byte Fifty = 50;
         const byte SeventyFive = 75;
-        switch (DateTimeOffset.Now.Month)
+        switch (DateTimeOffset.Now.DateTime.ToClientTimeZone(8).Month)
         {
             case March:
                 if (!isLocal && percentAnnualLeaveRemaining > SeventyFive)
