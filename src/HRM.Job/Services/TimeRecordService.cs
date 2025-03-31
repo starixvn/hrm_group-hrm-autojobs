@@ -86,6 +86,8 @@ public class TimeRecordService(
                 timeRecord.RecordTime = timeRecord.RecordTime.ToServerTimeZone(clientTimeZone);
             }
 
+            await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
+
             var command = new ImportTimeRecordCommand
             {
                 CompanyId = companyId,
