@@ -88,14 +88,21 @@ public class TimeRecordService(
 
             await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
 
-            var command = new ImportTimeRecordCommand
+            const short batchSize = 10;
+            var totalBatch = (int)Math.Ceiling((double)timeRecords.Count / batchSize);
+            for (var i = 0; i < totalBatch; i++)
             {
-                CompanyId = companyId,
-                FromDate = fromDate,
-                ToDate = toDate,
-                TimeRecordXml = timeRecords.ToXML().ToString()
-            };
-            await baseService.ExecuteNonQueryAsync(command);
+                var batchData = timeRecords.Skip(i * batchSize).Take(batchSize).ToList();
+
+                var command = new ImportTimeRecordCommand
+                {
+                    CompanyId = companyId,
+                    FromDate = fromDate,
+                    ToDate = toDate,
+                    TimeRecordXml = batchData.ToXML().ToString()
+                };
+                await baseService.ExecuteNonQueryAsync(command);
+            }
         }
     }
 }
