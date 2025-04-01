@@ -14,7 +14,17 @@ using Newtonsoft.Json;
 
 public class HttpClientService : IHttpClientService
 {
-    private static readonly HttpClient httpClient = new();
+    private static readonly HttpClient httpClient = CreateHttpClient();
+    private static HttpClient CreateHttpClient()
+    {
+        var handler = new HttpClientHandler();
+        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+        {
+            return true;
+        };
+
+        return new HttpClient(handler);
+    }
 
     public T ExecuteGet<T>(string baseUrl, string token = null, string data = null) where T : new()
         => SendHttpClient<T>(baseUrl, token, HttpMethod.Get, data);
