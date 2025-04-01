@@ -23,6 +23,8 @@ public static class ServiceCollectionExtensions
         var jobSettings = configuration.GetSection("JobSettings").Get<List<JobSetting>>();
         services.AddSingleton(jobSettings);
 
+        services.AddHttpClient();
+
         services.AddSingleton<ILogger, Logger>();
 
         services.AddSingleton<IDynamicRepository, DynamicRepository>();
@@ -48,7 +50,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IHttpClientService, HttpClientService>();
 
-        services.AddHttpClient();
+       
 
         return services;
     }
