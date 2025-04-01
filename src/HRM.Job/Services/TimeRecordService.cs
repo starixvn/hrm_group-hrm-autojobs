@@ -88,7 +88,7 @@ public class TimeRecordService(
 
             await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
 
-            const short batchSize = 10;
+            const short batchSize = 20;
             var totalBatch = (int)Math.Ceiling((double)timeRecords.Count / batchSize);
             for (var i = 0; i < totalBatch; i++)
             {
@@ -101,7 +101,9 @@ public class TimeRecordService(
                     ToDate = toDate,
                     TimeRecordXml = batchData.ToXML().ToString()
                 };
-                await baseService.ExecuteNonQueryAsync(command);
+
+                var thread = new Thread(() => baseService.ExecuteNonQueryAsync(command));
+                thread.Start();
             }
         }
     }
