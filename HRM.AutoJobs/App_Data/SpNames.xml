@@ -10,7 +10,7 @@
         <Setting Key="Auto_AnnualLeaveBalance_UpdateForNewEmployee" SpName="Auto_AnnualLeaveBalance_UpdateForNewEmployee" DbName="bodb_HRM" Plain="0" />
         <Setting Key="Auto_AnnualLeaveBalance_Get" SpName="Auto_AnnualLeaveBalance_Get" DbName="bodb_HRM" Plain="0" />
         <Setting Key="Holiday_AutoGenerate" SpName="Holiday_AutoGenerate" DbName="bodb_HRM" Plain="0" />
-        <Setting Key="Auto_TimeRecord_Import" SpName="Auto_TimeRecord_Import" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_TimeRecord_Import" SpName="Auto_TimeRecord_Import" DbName="bodb_HRM" Timeout="600" Plain="0" />
     </Function>
     <Function Name="MailDeliver">
         <Setting Key="MailRecorder_GetSetting" SpName="MailRecorder_GetSetting" DbName="bodb_HRM">
