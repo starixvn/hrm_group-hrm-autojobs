@@ -45,7 +45,7 @@ namespace EPA.SyncJob.ThirdPartyAPI
                 catch (HttpRequestException e)
                 {
                     // Log the exception or handle it as needed
-                    throw new Exception("Error requesting token", e);
+                    throw new Exception($"Error requesting token API: {serviceApi.Domain}", e);
                 }
             }
         }
