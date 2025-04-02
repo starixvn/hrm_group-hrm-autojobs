@@ -21,9 +21,8 @@ namespace EPA.SyncJob.ThirdPartyAPI
 
         public async Task<TokenAccess> RequestAsync(ServiceAPI serviceApi)
         {
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-            HttpClient client = new HttpClient(handler);
+            var handler = new HttpClientHandler { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator };
+            var client = new HttpClient(handler);
 
             var form = new Dictionary<string, string>
                 {
