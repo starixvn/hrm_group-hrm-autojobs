@@ -46,8 +46,8 @@ namespace EPA.SyncJob.Worker
                 }
                 catch (Exception ex)
                 {
-                    await logger.ErrorAsync($"Error SyncDepartment service API: {serviceApi.Name} - {ex}");
-                    logfile.LogError($"Error SyncDepartment service API: {serviceApi.Name} - {ex}");
+                    await logger.ErrorAsync($"Error SyncDepartment service API: {serviceApi.Name} - {serviceApi.Domain} - {ex}");
+                    logfile.LogError($"Error SyncDepartment service API: {serviceApi.Name}  - {serviceApi.Domain} - {ex}");
                 }
             });
 
