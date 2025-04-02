@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Cronos;
+using Fanex.Logging.Extensions;
 using Job.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -47,7 +48,11 @@ public class BaseWorker(ILogger<BaseWorker> logfile, Fanex.Logging.ILogger logge
         }
         catch (Exception ex)
         {
-            await logger.ErrorAsync($"{jobSetting.JobName}: Error - {ex}");
+            var logMessage = new LogMessage($"{jobSetting.JobName}: Error - {ex.Message}")
+                .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+                .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(ex))
+                .ToString();
+            await logger.ErrorAsync(logMessage);
         }
     }
 

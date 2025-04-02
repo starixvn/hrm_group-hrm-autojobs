@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Fanex.Logging;
+using Fanex.Logging.Extensions;
 using HRM.Job.Constants;
 using HRM.Job.Criteria;
 using HRM.Job.Extensions;
@@ -94,17 +96,32 @@ public class TimeRecordService(
             {
                 var batchData = timeRecords.Skip(i * batchSize).Take(batchSize).ToList();
 
-                var command = new ImportTimeRecordCommand
-                {
-                    CompanyId = companyId,
-                    FromDate = fromDate,
-                    ToDate = toDate,
-                    TimeRecordXml = batchData.ToXML().ToString()
-                };
-
-                var thread = new Thread(() => baseService.ExecuteNonQueryAsync(command));
+                var thread = new Thread(() => ImportTimeRecordByBatchAsync(companyId, fromDate, toDate, batchData));
                 thread.Start();
             }
+        }
+    }
+
+    private async Task ImportTimeRecordByBatchAsync(short companyId, DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
+    {
+        var command = new ImportTimeRecordCommand
+        {
+            CompanyId = companyId,
+            FromDate = fromDate,
+            ToDate = toDate,
+            TimeRecordXml = records.ToXML().ToString()
+        };
+        try
+        {
+            await baseService.ExecuteNonQueryAsync(command);
+        }
+        catch (Exception ex)
+        {
+            var logMessage = new LogMessage(ex.Message)
+                .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+                .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(ex))
+                .ToString();
+            await logger.ErrorAsync(logMessage);
         }
     }
 }
