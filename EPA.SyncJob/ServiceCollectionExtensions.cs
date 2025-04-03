@@ -14,9 +14,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>();
-        services.AddSingleton(appSettings);
-
         var serviveAPIs = configuration.GetSection("ServiceAPIs").Get<List<ServiceAPI>>();
         services.AddSingleton(serviveAPIs);
 
@@ -49,8 +46,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IJobLevelAPI, JobLevelAPI>();
 
         services.AddSingleton<IHttpClientService, HttpClientService>();
-
-       
 
         return services;
     }

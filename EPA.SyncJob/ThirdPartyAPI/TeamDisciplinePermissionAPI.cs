@@ -6,8 +6,7 @@ using Newtonsoft.Json;
 
 namespace EPA.SyncJob.ThirdPartyAPI
 {
-    
-    public class TeamDisciplinePermissionAPI(AppSettings appSettings, IHttpClientService httpClient) : ITeamDisciplinePermissionAPI
+    public class TeamDisciplinePermissionAPI(IHttpClientService httpClient) : ITeamDisciplinePermissionAPI
     {
         public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
         {
