@@ -90,7 +90,7 @@ public class TimeRecordService(
 
             await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
 
-            const short batchSize = 20;
+            const short batchSize = 50;
             var totalBatch = (int)Math.Ceiling((double)timeRecords.Count / batchSize);
             for (var i = 0; i < totalBatch; i++)
             {
