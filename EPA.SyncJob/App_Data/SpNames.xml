@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Functions>
+    <Function Name="Employee">
+        <Setting Key="SyncEPA_Employee_Get" SpName="SyncEPA_Employee_Get" DbName="bodb_HRM" Plain="0">
+            <Mapping DataField="EmpId" ObjectProperty="EmployeeId" />
+        </Setting>
+        <Setting Key="SyncEPA_EmployeeGroup_Get" SpName="SyncEPA_EmployeeGroup_Get" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="SyncEPA_Department" SpName="SyncEPA_Department" DbName="bodb_HRM" Plain="0">
+        </Setting>
+        <Setting Key="SyncEPA_JobTitle_Get" SpName="SyncEPA_JobTitle_Get" DbName="bodb_HRM" Plain="0">
+            <Mapping DataField="Id" ObjectProperty="JobTitleId" />
+        </Setting>
+        <Setting Key="SyncEPA_DisciplineSummary" SpName="SyncEPA_DisciplineSummary" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="SyncEPA_EmployeeSupervisor_Get" SpName="SyncEPA_EmployeeSupervisor_Get" DbName="bodb_HRM" Plain="0">
+            <Mapping DataField="EmpId" ObjectProperty="EmployeeId" />
+        </Setting>
+        <Setting Key="SyncEPA_GroupSupervisor_Get" SpName="SyncEPA_GroupSupervisor_Get" DbName="bodb_HRM" Plain="0">
+            <Mapping DataField="GroupId" ObjectProperty="TeamId" />
+        </Setting>
+        <Setting Key="SyncEPA_JobLevel" SpName="SyncEPA_JobLevel" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="CompanySite_GetByDomain" SpName="CompanySite_GetByDomain" DbName="bodb_HRM" Plain="0" />
+    </Function>
+</Functions>

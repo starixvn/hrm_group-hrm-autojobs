@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Functions>
+    <Function Name="Auto Jobs">
+        <Setting Key="TimeRecord_ImportData" SpName="TimeRecord_ImportData" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_EmployeeCalendar_UpdateIsPublic" SpName="Auto_EmployeeCalendar_UpdateIsPublic" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_EmployeeCalendar_InsertDefaultShift" SpName="Auto_EmployeeCalendar_InsertDefaultShift" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_EmployeeCalendar_InsertWeeklyDefaultShift" SpName="Auto_EmployeeCalendar_InsertWeeklyDefaultShift" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_Postnatal_UpdateWorkingHour" SpName="Auto_Postnatal_UpdateWorkingHour" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_AnnualLeaveBalance_Update" SpName="Auto_AnnualLeaveBalance_Update" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_AnnualLeaveBalance_UpdateForNewEmployee" SpName="Auto_AnnualLeaveBalance_UpdateForNewEmployee" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_AnnualLeaveBalance_Get" SpName="Auto_AnnualLeaveBalance_Get" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Holiday_AutoGenerate" SpName="Holiday_AutoGenerate" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Auto_TimeRecord_Import" SpName="Auto_TimeRecord_Import" DbName="bodb_HRM" Timeout="300" Plain="0" />
+    </Function>
+    <Function Name="MailDeliver">
+        <Setting Key="MailRecorder_GetSetting" SpName="MailRecorder_GetSetting" DbName="bodb_HRM">
+            <Mapping DataField="SettingID" ObjectProperty="AppId" />
+        </Setting>
+        <Setting Key="MailRecorder_InsError" SpName="MailRecorder_InsError" DbName="bodb_HRM" />
+        <Setting Key="MailRecorder_InsRecord" SpName="MailRecorder_InsRecord" DbName="bodb_HRM" />
+        <Setting Key="MailRecorder_UpdateMailStatus" SpName="MailRecorder_UpdateMailStatus" DbName="bodb_HRM" />
+        <Setting Key="SystemConfigs_GetByKey" SpName="SystemConfigs_GetByKey" DbName="bodb_HRM" />
+    </Function>
+    <Function Name="Sync Data">
+        <Setting Key="Sync_WorkingShift_GetLastModifiedDate" SpName="Sync_WorkingShift_GetLastModifiedDate" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="Sync_WorkingShift_Import" SpName="Sync_WorkingShift_Import" DbName="bodb_HRM" Plain="0" />
+        <Setting Key="HRM_SyncData_GroupReport_GetEmployeeInfo" SpName="HRM_SyncData_GroupReport_GetEmployeeInfo" DbName="bodb_HRM" Plain="0" />
+    </Function>
+</Functions>
