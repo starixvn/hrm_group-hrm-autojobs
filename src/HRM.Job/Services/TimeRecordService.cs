@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -90,7 +89,7 @@ public class TimeRecordService(
 
             await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
 
-            const short batchSize = 50;
+            const short batchSize = 100;
             var totalBatch = (int)Math.Ceiling((double)timeRecords.Count / batchSize);
             for (var i = 0; i < totalBatch; i++)
             {
