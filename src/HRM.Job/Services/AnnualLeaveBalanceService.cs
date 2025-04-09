@@ -105,7 +105,7 @@ public class AnnualLeaveBalanceService(
     {
         foreach (var item in statistics)
         {
-            var totalEmployees = validEmployees.Count(x => x.SectionId == item.SectionId && x.DepartmentId == item.DepartmentId);
+            var totalEmployees = validEmployees.Count(x => x.DepartmentId == item.DepartmentId);
             var percentage = Math.Round((double)totalEmployees / item.TotalEmployee * 100);
 
             item.AnnualLeaveBalance = totalEmployees;
@@ -115,14 +115,13 @@ public class AnnualLeaveBalanceService(
         var percentByMonth = GetPercentByMonth();
 
         var groupSupervisors = supervisors
-            .GroupBy(g => new { g.Nickname, g.OwnerId, g.SectionId, g.DepartmentId, g.Email })
+            .GroupBy(g => new { g.Nickname, g.OwnerId, g.DepartmentId, g.Email })
             .GroupBy(x => x.Key.OwnerId).ToList();
 
         const string tableALTemplate = "<tr><td style=\"border: 1px solid;\">{0}</td>"
-                                       + "<td style=\"border: 1px solid;\">{1}</td>"
+                                       + "<td style=\"text-align: center; border: 1px solid;\">{1}</td>"
                                        + "<td style=\"text-align: center; border: 1px solid;\">{2}</td>"
-                                       + "<td style=\"text-align: center; border: 1px solid;\">{3}</td>"
-                                       + "<td style=\"text-align: center; border: 1px solid;\">{4}%</td></tr>";
+                                       + "<td style=\"text-align: center; border: 1px solid;\">{3}%</td></tr>";
 
         foreach (var groupSupervisor in groupSupervisors)
         {
@@ -133,13 +132,12 @@ public class AnnualLeaveBalanceService(
             var sections = groupSupervisor.Select(x => x.Key).ToList();
             foreach (var item in sections)
             {
-                var statisticSection = statistics.Find(x => x.SectionId == item.SectionId && x.DepartmentId == item.DepartmentId);
+                var statisticSection = statistics.Find(x => x.DepartmentId == item.DepartmentId);
                 if (statisticSection != null)
                 {
                     tableStatistic.AppendFormat(
                         tableALTemplate,
-                        statisticSection.Department,
-                        statisticSection.Section,
+                        statisticSection.DepartmentName,
                         statisticSection.TotalEmployee,
                         statisticSection.AnnualLeaveBalance,
                         statisticSection.Percentage
@@ -161,7 +159,7 @@ public class AnnualLeaveBalanceService(
                 {
                     MailTo = email,
                     MailCc = string.Empty,
-                    Subject = "Department / Section Annual Leave Balance Reminder",
+                    Subject = "Department Annual Leave Balance Reminder",
                     Body = body
                 };
 
