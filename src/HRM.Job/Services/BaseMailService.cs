@@ -1,10 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Net;
-using System.Net.Mail;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HRM.Job.Constants;
@@ -12,6 +8,7 @@ using HRM.Job.Criteria.MailDeliver;
 using HRM.Job.Models;
 using HRM.Job.Models.MailDeliver;
 using HRM.Job.Services.Interfaces;
+using MailKit.Net.Smtp;
 using MimeKit;
 using Newtonsoft.Json;
 
@@ -41,23 +38,19 @@ public class BaseMailService(
         if (email != null && IsValidEmail(email.MailTo))
         {
             await InsertMailRecordAsync(email);
-            isSuccessful = await SendAsync(email);
+            isSuccessful = await SendByMailKitAsync(email);
         }
 
-        return isSuccessful;
-    }
-
-    private async Task<bool> SendAsync(MailRecord email)
-    {
-        var isSuccessful = email.MailSetting.Port == 465 ? await SendByMailKitAsync(email) : await SendByMailNetAsync(email);
         return isSuccessful;
     }
 
     private async Task<bool> SendByMailKitAsync(MailRecord email)
     {
         var message = GetMessageContent(email);
+        var isSuccessful = false;
 
-        using var mailClient = new MailKit.Net.Smtp.SmtpClient();
+        using var mailClient = new SmtpClient();
+        mailClient.ServerCertificateValidationCallback += RemoteCertificateValidationCallback;
         await mailClient.ConnectAsync(email.MailSetting.Server, email.MailSetting.Port, email.MailSetting.IsAuth);
         if (email.MailSetting.IsAuth)
         {
@@ -67,96 +60,17 @@ public class BaseMailService(
         try
         {
             await mailClient.SendAsync(message);
+            isSuccessful = true;
             await UpdateMailStatusAsync(email, true);
         }
         catch (Exception ex)
         {
             await HandleMailErrorAsync(email, ex.Message, ex.StackTrace);
-            throw;
         }
 
         await mailClient.DisconnectAsync(true);
 
-        return true;
-    }
-
-    private async Task<bool> SendByMailNetAsync(MailRecord email)
-    {
-        var isSuccessful = false;
-        try
-        {
-            var msg = new MailMessage
-            {
-                From = new MailAddress(email.MailSetting.Username)
-            };
-            if (!string.IsNullOrEmpty(email.MailTo))
-            {
-                GetMailFromString(email.MailTo, msg.To);
-                GetMailFromString(email.MailCc, msg.CC);
-                GetMailFromString(email.MailBcc, msg.Bcc);
-
-                msg.Subject = email.Subject;
-                msg.SubjectEncoding = Encoding.UTF8;
-                msg.IsBodyHtml = true;
-                msg.Body = email.Body;
-                msg.BodyEncoding = Encoding.UTF8;
-                msg.Priority = MailPriority.Normal;
-
-                var client = new SmtpClient
-                {
-                    Port = email.MailSetting.Port,
-                    Host = email.MailSetting.Server
-                };
-                if (email.MailSetting.IsAuth)
-                {
-                    client.Credentials = new NetworkCredential(email.MailSetting.Username, email.MailSetting.Password);
-                    client.EnableSsl = true;
-                }
-
-                ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidationCallback;
-
-                client.SendCompleted += async (_, e) => await SendCompletedCallback(e);
-                client.SendAsync(msg, email);
-                isSuccessful = true;
-            }
-        }
-        catch (Exception ex)
-        {
-            await HandleMailErrorAsync(email, ex.Message, ex.StackTrace);
-            throw;
-        }
-
         return isSuccessful;
-    }
-
-    private async Task SendCompletedCallback(AsyncCompletedEventArgs e)
-    {
-        var email = (MailRecord)e.UserState;
-        var status = e.Error == null;
-        if (!status)
-        {
-            await HandleMailErrorAsync(email, e.Error.InnerException != null ? e.Error.InnerException.Message : e.Error.Message, e.Error.StackTrace);
-        }
-        else
-        {
-            await UpdateMailStatusAsync(email, true);
-        }
-    }
-
-    private static void GetMailFromString(string mailString, MailAddressCollection mails)
-    {
-        if (!string.IsNullOrWhiteSpace(mailString))
-        {
-            var emails = RemoveDoubleComma(mailString);
-            var mailArrays = emails.Split(';');
-            foreach (var mail in mailArrays)
-            {
-                if (!string.IsNullOrEmpty(mail))
-                {
-                    mails.Add(mail);
-                }
-            }
-        }
     }
 
     private static void GetMailAddressFromString(string mailString, InternetAddressList mails)

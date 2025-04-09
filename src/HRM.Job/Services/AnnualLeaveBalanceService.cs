@@ -59,7 +59,13 @@ public class AnnualLeaveBalanceService(
         var bodyTemplate = ReadTextFile(Path.Combine(hostEnvironment.ContentRootPath, RemindUseALTemplatePath));
         var validEmployees = new List<AnnualLeaveBalance>();
         var mailConfig = await mailService.GetMailConfigAsync(companyId);
-        var mailSetting = await mailService.GetMailSettingByIdAsync(mailConfig?.AppMailId ?? 0);
+
+        if (mailConfig is not { Enable: true })
+        {
+            return;
+        }
+
+        var mailSetting = await mailService.GetMailSettingByIdAsync(mailConfig.AppMailId);
 
         foreach (var employee in employees)
         {
@@ -219,10 +225,7 @@ public class AnnualLeaveBalanceService(
         return percent;
     }
 
-#pragma warning disable S1541 // Methods and properties should not be too complex
-
     private static void CheckSendMail(ref bool isSentMail, bool isLocal, ref string percentInMail, float percentAnnualLeaveRemaining)
-#pragma warning restore S1541 // Methods and properties should not be too complex
     {
         const byte March = 3;
         const byte June = 6;
