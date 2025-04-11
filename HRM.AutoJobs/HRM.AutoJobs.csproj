@@ -8,7 +8,6 @@
   <ItemGroup>
     <PackageReference Include="Cronos" Version="0.9.0" />
     <PackageReference Include="Fanex.Caching.Redis" Version="2.2.8" />
-    <PackageReference Include="Fanex.Logging.Extensions" Version="1.1.0" />
     <PackageReference Include="Fanex.Logging.Sentry.RavenClient" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
