@@ -32,7 +32,7 @@ public class TimeRecordService(
         }
     }
 
-    public async Task GetTimeRecordAsync(TimeRecordApiSetting setting)
+    private async Task GetTimeRecordAsync(TimeRecordApiSetting setting)
     {
         var toDate = DateTimeOffset.Now.DateTime.ToClientTimeZone(8);
         var fromDate = toDate.AddHours(-12);
@@ -89,20 +89,11 @@ public class TimeRecordService(
             }
 
             await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
-
-            const short batchSize = 100;
-            var totalBatch = (int)Math.Ceiling((double)timeRecords.Count / batchSize);
-            for (var i = 0; i < totalBatch; i++)
-            {
-                var batchData = timeRecords.Skip(i * batchSize).Take(batchSize).ToList();
-
-                var thread = new Thread(() => ImportTimeRecordByBatchAsync(companyId, fromDate, toDate, batchData));
-                thread.Start();
-            }
+            await ImportTimeRecordAsync(companyId, fromDate, toDate, timeRecords);
         }
     }
 
-    private async Task ImportTimeRecordByBatchAsync(short companyId, DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
+    private async Task ImportTimeRecordAsync(short companyId, DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
     {
         var command = new ImportTimeRecordCommand
         {
@@ -110,6 +101,36 @@ public class TimeRecordService(
             FromDate = fromDate,
             ToDate = toDate,
             TimeRecordXml = records.ToXML().ToString()
+        };
+        try
+        {
+            await baseService.ExecuteNonQueryAsync(command);
+        }
+        catch (Exception ex)
+        {
+            var logMessage = new LogMessage(ex.Message)
+                .AddSection("Database Info", DatabaseInfoGetters.GetDbExceptionInfo(ex))
+                .AddSection("Server Info", CommonInfoGetters.GetServerInfo())
+                .AddSection("Exception Info", CommonInfoGetters.GetExceptionInfo(ex))
+                .ToString();
+            await logger.ErrorAsync(logMessage);
+        }
+    }
+
+    public async Task ProcessEmployeeAttendanceAsync(List<short> companyIds)
+    {
+        foreach (var companyId in companyIds)
+        {
+            var thread = new Thread(() => ProcessEmployeeAttendanceAsync(companyId));
+            thread.Start();
+        }
+    }
+
+    private async Task ProcessEmployeeAttendanceAsync(short companyId)
+    {
+        var command = new ProcessEmployeeAttendanceCommand
+        {
+            CompanyId = companyId
         };
         try
         {
