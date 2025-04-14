@@ -35,7 +35,7 @@ public class TimeRecordService(
     private async Task GetTimeRecordAsync(TimeRecordApiSetting setting)
     {
         var toDate = DateTimeOffset.Now.DateTime.ToClientTimeZone(8);
-        var fromDate = toDate.AddHours(-12);
+        var fromDate = toDate.AddHours(-6);
         var url = new Uri($"{setting.Url}?fromDate={fromDate:yyyy-MM-dd HH:mm:ss}&toDate={toDate:yyyy-MM-dd HH:mm:ss}");
         var httpClient = clientFactory.CreateClient();
 
