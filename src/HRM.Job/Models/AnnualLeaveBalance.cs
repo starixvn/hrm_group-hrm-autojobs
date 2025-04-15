@@ -15,9 +15,6 @@ public class AnnualLeaveBalance
     public float LeaveBalance { get; set; }
     public string LetStalk { get; set; }
 
-    public int SectionId { get; set; }
-    public string Section { get; set; }
-
     public int DepartmentId { get; set; }
-    public string Department { get; set; }
+    public string DepartmentName { get; set; }
 }
