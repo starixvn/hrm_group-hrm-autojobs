@@ -5,9 +5,10 @@ namespace HRM.Job.Constants;
 
 public static class TimeRecordApiConstant
 {
-    public static readonly ImmutableDictionary<string, (short, short)> CompanyDict =
-        new Dictionary<string, (short, short)>
+    public static readonly ImmutableDictionary<string, short> CompanyDict =
+        new Dictionary<string, short>
         {
-            {"SMS", (3, 7)}
+            {"SMS", 3},
+            {"HM", 4}
         }.ToImmutableDictionary();
 }

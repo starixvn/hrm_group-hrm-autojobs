@@ -34,7 +34,7 @@ public class TimeRecordService(
 
     private async Task GetTimeRecordAsync(TimeRecordApiSetting setting)
     {
-        var toDate = DateTimeOffset.Now.DateTime.ToClientTimeZone(8);
+        var toDate = DateTimeOffset.Now.DateTime.ToClientTimeZone(setting.Timezone);
         var fromDate = toDate.AddHours(-6);
         var url = new Uri($"{setting.Url}?fromDate={fromDate:yyyy-MM-dd HH:mm:ss}&toDate={toDate:yyyy-MM-dd HH:mm:ss}");
         var httpClient = clientFactory.CreateClient();
@@ -55,7 +55,7 @@ public class TimeRecordService(
                 var records = JsonConvert.DeserializeObject<IList<TimeRecordAPI>>(rawData);
                 if (records != null && records.Any())
                 {
-                    await ImportTimeRecordAsync(fromDate, toDate, records);
+                    await ImportTimeRecordAsync(setting.Timezone, fromDate, toDate, records);
                 }
             }
             else
@@ -70,18 +70,17 @@ public class TimeRecordService(
         }
     }
 
-    private async Task ImportTimeRecordAsync(DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
+    private async Task ImportTimeRecordAsync(float clientTimeZone, DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
     {
         var recordsByCompany = records.GroupBy(x => x.Company);
         foreach (var record in recordsByCompany)
         {
-            var company = TimeRecordApiConstant.CompanyDict.GetValueOrDefault(record.Key);
-            if (company == default)
+            var companyId = TimeRecordApiConstant.CompanyDict.GetValueOrDefault(record.Key);
+            if (companyId == default)
             {
                 continue;
             }
 
-            var (companyId, clientTimeZone) = company;
             var timeRecords = record.ToList();
             foreach (var timeRecord in timeRecords)
             {
