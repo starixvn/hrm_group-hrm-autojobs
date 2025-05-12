@@ -1,7 +1,7 @@
 using EPA.SyncJob;
+using EPA.SyncJob.Middlewares;
 using Fanex.Data.SqlServer;
 using Fanex.Logging.Sentry.RavenClient;
-using HRM.Website.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
