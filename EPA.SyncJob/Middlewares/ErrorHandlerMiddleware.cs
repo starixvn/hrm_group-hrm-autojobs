@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Fanex.Logging.Extensions;
 
-namespace HRM.Website.Middlewares;
+namespace EPA.SyncJob.Middlewares;
 
 public class ErrorHandler(RequestDelegate next, Fanex.Logging.ILogger logger)
 {

@@ -31,7 +31,6 @@ public class BaseMailService(
         return data;
     }
 
-
     public async Task<bool> SendEmailAsync(MailRecord email)
     {
         var isSuccessful = false;

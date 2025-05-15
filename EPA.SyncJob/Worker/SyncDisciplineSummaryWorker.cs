@@ -5,70 +5,64 @@ using EPA.SyncJob.Services.Interface;
 using EPA.SyncJob.Services.Interfaces;
 using EPA.SyncJob.Workers;
 
-namespace EPA.SyncJob.Worker
+namespace EPA.SyncJob.Worker;
+
+public class SyncDisciplineSummaryWorker : BaseWorker
 {
-    public class SyncDisciplineSummaryWorker : BaseWorker
+    private readonly IDisciplineSummaryService disciplineSummaryService;
+    private readonly ITokenService tokenService;
+    private readonly List<ServiceAPI> serviceApis;
+    private readonly ILogger<SyncDisciplineSummaryWorker> logfile;
+    private readonly Fanex.Logging.ILogger logger;
+
+    public SyncDisciplineSummaryWorker(
+        IDisciplineSummaryService disciplineSummaryService,
+        ITokenService tokenService,
+        List<JobSetting> jobSettings,
+        List<ServiceAPI> serviceApis,
+        ILogger<SyncDisciplineSummaryWorker> logfile,
+        Fanex.Logging.ILogger logger) : base(logfile, logger)
     {
-        private readonly IDisciplineSummaryService disciplineSummaryService;
-        private readonly ITokenService tokenService;
-        private readonly ICompanyService companyService;
-        private readonly List<ServiceAPI> serviceApis;
-        private readonly ILogger<SyncDisciplineSummaryWorker> logfile;
-        private readonly Fanex.Logging.ILogger logger;
+        jobSetting = JobHelper.GetJobConfig(jobSettings, JobSettingConstants.SyncDisciplineSummary);
+        this.disciplineSummaryService = disciplineSummaryService;
+        this.tokenService = tokenService;
+        this.serviceApis = serviceApis;
+        this.logfile = logfile;
+        this.logger = logger;
+    }
 
-        public SyncDisciplineSummaryWorker(
-            IDisciplineSummaryService disciplineSummaryService,
-            ITokenService tokenService,
-            ICompanyService companyService,
-            List<JobSetting> jobSettings,
-            List<ServiceAPI> serviceApis,
-            ILogger<SyncDisciplineSummaryWorker> logfile,
-            Fanex.Logging.ILogger logger) : base(logfile, logger)
+    public override async Task DoWorkAsync()
+    {
+        var serviceApiList = serviceApis.ToList();
+        var tasks = serviceApiList.Select(async serviceApi =>
         {
-            
-            jobSetting = JobHelper.GetJobConfig(jobSettings, JobSettingConstants.SyncDisciplineSummary);
-            this.disciplineSummaryService = disciplineSummaryService;
-            this.companyService = companyService;
-            this.tokenService = tokenService;
-            this.serviceApis = serviceApis;
-            this.logfile = logfile;
-            this.logger = logger;
-        }
-
-        public override async Task DoWorkAsync()
-        {
-            var serviceApiList = serviceApis.ToList();
-            var tasks = serviceApiList.Select(async serviceApi =>
+            try
             {
-                try
-                {
-                    await UpdateAsync(serviceApi);
-                    logfile.LogInformation($"Successful SyncDisciplineSummary service API: {serviceApi.Name}");
-                }
-                catch (Exception ex)
-                {
-                    await logger.ErrorAsync($"Error SyncDiscipline service API: {serviceApi.Name} - {ex}");
-                    logfile.LogError($"Error SyncDiscipline service API: {serviceApi.Name} - {ex}");
-                }
-            });
-
-            await Task.WhenAll(tasks);
-        }
-
-        private async Task UpdateAsync(ServiceAPI serviceApi)
-        {
-            var token = await tokenService.Request(serviceApi);
-            if (!token.IsValid())
-            {
-                throw new InvalidOperationException("Invalid token");
+                await UpdateAsync(serviceApi);
+                logfile.LogInformation($"Successful SyncDisciplineSummary service API: {serviceApi.Name}");
             }
-           var fromDate = await disciplineSummaryService.GetLastModifiedDateAsync(token, serviceApi);
-            var data = await disciplineSummaryService.GetDisciplineSummaryAsync(fromDate, serviceApi.CompanyId);
-            if (data.Any())
+            catch (Exception ex)
             {
-                await disciplineSummaryService.UpdateAsync(data, token, serviceApi);
+                await logger.ErrorAsync($"Error SyncDiscipline service API: {serviceApi.Name} - {ex}");
+                logfile.LogError($"Error SyncDiscipline service API: {serviceApi.Name} - {ex}");
             }
-        }
+        });
 
+        await Task.WhenAll(tasks);
+    }
+
+    private async Task UpdateAsync(ServiceAPI serviceApi)
+    {
+        var token = await tokenService.Request(serviceApi);
+        if (!token.IsValid())
+        {
+            throw new InvalidOperationException("Invalid token");
+        }
+        var fromDate = await disciplineSummaryService.GetLastModifiedDateAsync(token, serviceApi);
+        var data = await disciplineSummaryService.GetDisciplineSummaryAsync(fromDate, serviceApi.CompanyId);
+        if (data.Any())
+        {
+            await disciplineSummaryService.UpdateAsync(data, token, serviceApi);
+        }
     }
 }
