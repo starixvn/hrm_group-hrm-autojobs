@@ -60,7 +60,7 @@ public class AnnualLeaveBalanceService(
     public async Task InsertForNewEmployeesByJoinedDateAsync(AnnualLeaveResetConfig config)
     {
         const bool isNewEmployee = true;
-        var employees = await GetEmployeesDetail(config.CompanyId, isNewEmployee);
+        var employees = await GetEmployeesDetail(config.CompanyId);
 
         var annualLeaveUpdateModels = CalculateExtraLeavesForEmployeesByJoinedDate(employees, config.IsEnableAdditionalAnnualLeaveBalance, isNewEmployee);
 
@@ -74,7 +74,7 @@ public class AnnualLeaveBalanceService(
     public async Task InsertForNextYearByJoinedDateAsync(AnnualLeaveResetConfig config)
     {
         const bool isNewEmployee = false;
-        var employees = await GetEmployeesDetail(config.CompanyId, isNewEmployee);
+        var employees = await GetEmployeesDetail(config.CompanyId);
 
         var today = DateTimeOffset.Now;
         
@@ -147,12 +147,11 @@ public class AnnualLeaveBalanceService(
         return annualLeaveUpdateModels;
     } 
 
-    private async Task<IEnumerable<EmployeeServiceDetail>> GetEmployeesDetail(short companyId, bool isNewEmployee)
+    private async Task<IEnumerable<EmployeeServiceDetail>> GetEmployeesDetail(short companyId)
     {
         var command = new GetEmployeesServiceDetailCriteria
         {
-            CompanyId = companyId,
-            IsNewEmployee = isNewEmployee
+            CompanyId = companyId
         };
         var employees = await baseService.GetDataAsync<EmployeeServiceDetail>(command);
         return employees;
