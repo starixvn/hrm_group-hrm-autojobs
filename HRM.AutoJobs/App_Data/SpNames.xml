@@ -11,8 +11,11 @@
         <Setting Key="Auto_AnnualLeaveBalance_Get" SpName="Auto_AnnualLeaveBalance_Get" DbName="bodb_HRM" Plain="0" />
         <Setting Key="Holiday_AutoGenerate" SpName="Holiday_AutoGenerate" DbName="bodb_HRM" Plain="0" />
         <Setting Key="Auto_TimeRecord_Import" SpName="Auto_TimeRecord_Import" DbName="bodb_HRM" Timeout="300" Plain="0" />
-        <Setting Key="EmployeeAttendance_ForWaitingCase" SpName="EmployeeAttendance_ForWaitingCase" DbName="bodb_HRM" Timeout="300" Plain="0" />
-    </Function>
+		<Setting Key="EmployeeAttendance_ForWaitingCase" SpName="EmployeeAttendance_ForWaitingCase" DbName="bodb_HRM" Timeout="300" Plain="0" />
+		<Setting Key="AnnualLeave_ResetConfigs_Get" SpName="AnnualLeave_ResetConfigs_Get" DbName="bodb_HRM" Timeout="300" Plain="0" />
+		<Setting Key="Employees_ServiceDetail_Get" SpName="Employees_ServiceDetail_Get" DbName="bodb_HRM" Timeout="300" Plain="0" />
+		<Setting Key="Auto_AnnualLeaveBalance_JoinedDate_Update" SpName="Auto_AnnualLeaveBalance_JoinedDate_Update" DbName="bodb_HRM" Timeout="300" Plain="0" />
+	</Function>
     <Function Name="MailDeliver">
         <Setting Key="MailRecorder_GetSetting" SpName="MailRecorder_GetSetting" DbName="bodb_HRM">
             <Mapping DataField="SettingID" ObjectProperty="AppId" />
