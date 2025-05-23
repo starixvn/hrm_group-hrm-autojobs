@@ -7,8 +7,9 @@ using Microsoft.Extensions.Logging;
 using Job.Constants;
 using Job.Helpers;
 using Job.Models;
-using Job.Services.Interfaces;
 using System.Linq;
+using Job.Enum;
+using Job.Services.Interfaces;
 
 public class InsertALBalanceForNextYearWorker : BaseWorker
 {
@@ -26,15 +27,26 @@ public class InsertALBalanceForNextYearWorker : BaseWorker
 
     public override async Task DoWorkAsync()
     {
-        var today = DateTimeOffset.UtcNow;
-        var lastDay = DateTime.DaysInMonth(today.Year, today.Month);
-        var lastDayMonths = new[] { 8, 11 };
+        var configs = await annualLeaveBalanceService.GetAnnualLeaveResetConfigs();
 
-        if (today.Day == lastDay && lastDayMonths.Contains(today.Month))
+        foreach (var config in configs)
         {
-            foreach (var companyId in jobSetting.CompanyIds)
+            switch (config.Timeline)
             {
-                await annualLeaveBalanceService.InsertForNextYearAsync(companyId);
+                case TimeLineEnum.JoinedDate:
+                    await annualLeaveBalanceService.InsertForNextYearByJoinedDateAsync(config);
+                    break;
+                case TimeLineEnum.Yearly:
+                default:
+                    var today = DateTimeOffset.UtcNow;
+                    var lastDay = DateTime.DaysInMonth(today.Year, today.Month);
+                    var lastDayMonths = new[] { 8, 11 };
+                    
+                    if (today.Day == lastDay && lastDayMonths.Contains(today.Month))
+                    {
+                        await annualLeaveBalanceService.InsertForNextYearAsync(config.CompanyId);
+                    }
+                    break;
             }
         }
     }
