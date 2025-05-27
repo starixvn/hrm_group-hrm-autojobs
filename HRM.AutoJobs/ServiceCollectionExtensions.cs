@@ -32,6 +32,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IHolidayService, HolidayService>();
         services.AddSingleton<ITimeRecordService, TimeRecordService>();
         services.AddSingleton<IPostnatalService, PostnatalService>();
+        services.AddSingleton<IDisciplineService, DisciplineService>();
     }
 
     public static void ConfigureAppSettings(this IServiceCollection services, IConfiguration configuration)
@@ -88,5 +89,6 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<RemindUsedALWorker>();
         services.AddHostedService<UpdateWorkingHourPerDayWorker>();
         services.AddHostedService<ProcessEmployeeAttendanceWorker>();
+        services.AddHostedService<ProcessDisciplineWorker>();
     }
 }
