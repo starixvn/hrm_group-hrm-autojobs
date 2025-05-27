@@ -6,7 +6,7 @@ public class AnnualLeaveResetConfig
 {
     public short CompanyId { get; set; }
 
-    public TimeLineEnum Timeline { get; set; }
+    public AnnualLeaveTimeline Timeline { get; set; }
 
     private string EnableAdditionalAnnualLeaveBalance { get; set; }
 

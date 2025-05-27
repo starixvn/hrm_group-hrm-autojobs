@@ -31,15 +31,15 @@ public class InsertALBalanceForNewEmployeeWorker : BaseWorker
         {
             switch (config.Timeline)
             {
-                case TimeLineEnum.JoinedDate:
+                case AnnualLeaveTimeline.JoinedDate:
                     await annualLeaveBalanceService.InsertForNewEmployeesByJoinedDateAsync(config);
                     break;
 
-                case TimeLineEnum.Yearly:
+                case AnnualLeaveTimeline.Yearly:
                 default:
                     await annualLeaveBalanceService.InsertForNewEmployeeAsync(config.CompanyId);
                     break;
             }
-        };
+        }
     }
 }

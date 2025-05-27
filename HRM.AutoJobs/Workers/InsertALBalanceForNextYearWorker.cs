@@ -33,10 +33,10 @@ public class InsertALBalanceForNextYearWorker : BaseWorker
         {
             switch (config.Timeline)
             {
-                case TimeLineEnum.JoinedDate:
+                case AnnualLeaveTimeline.JoinedDate:
                     await annualLeaveBalanceService.InsertForNextYearByJoinedDateAsync(config);
                     break;
-                case TimeLineEnum.Yearly:
+                case AnnualLeaveTimeline.Yearly:
                 default:
                     var today = DateTimeOffset.UtcNow;
                     var lastDay = DateTime.DaysInMonth(today.Year, today.Month);
