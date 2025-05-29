@@ -62,7 +62,8 @@ public class AnnualLeaveBalanceService(
         const bool isNewEmployee = true;
         var employees = await GetEmployeesDetail(config.CompanyId);
 
-        var annualLeaveUpdateModels = CalculateExtraLeavesForEmployeesByJoinedDate(employees, config.IsEnableAdditionalAnnualLeaveBalance, isNewEmployee);
+        var annualLeaveUpdateModels 
+            = CalculateExtraLeavesForEmployeesByJoinedDate(employees, config.IsEnableAdditionalAnnualLeaveBalance, isNewEmployee);
 
         var command = new UpdateAnnualLeaveBalanceByJoinedDateCriteria
         {
@@ -86,7 +87,8 @@ public class AnnualLeaveBalanceService(
             })
             .ToList();
 
-        var annualLeaveUpdateModels = CalculateExtraLeavesForEmployeesByJoinedDate(employees, config.IsEnableAdditionalAnnualLeaveBalance, isNewEmployee);
+        var annualLeaveUpdateModels
+            = CalculateExtraLeavesForEmployeesByJoinedDate(employees, config.IsEnableAdditionalAnnualLeaveBalance, isNewEmployee);
 
         var command = new UpdateAnnualLeaveBalanceByJoinedDateCriteria
         {
@@ -95,7 +97,10 @@ public class AnnualLeaveBalanceService(
         await baseService.ExecuteNonQueryAsync(command);
     }
 
-    private static List<AnnualLeaveUpdateModel> CalculateExtraLeavesForEmployeesByJoinedDate(IEnumerable<EmployeeServiceDetail> employees, bool isEnableAdditionalAnnualLeaveBalance, bool isNewEmployee)
+    private static List<AnnualLeaveUpdateModel> CalculateExtraLeavesForEmployeesByJoinedDate(
+        IEnumerable<EmployeeServiceDetail> employees,
+        bool isEnableAdditionalAnnualLeaveBalance,
+        bool isNewEmployee)
     {
         List<AnnualLeaveUpdateModel> annualLeaveUpdateModels = [];
         var termDate = DateTimeOffset.Now;
@@ -105,7 +110,7 @@ public class AnnualLeaveBalanceService(
         }
         foreach (var employee in employees)
         {
-            AnnualLeaveUpdateModel model = new()
+            var model = new AnnualLeaveUpdateModel
             {
                 AnnualLeaves = employee.AnnualLeave,
                 EmpId = employee.EmpId,
@@ -165,7 +170,8 @@ public class AnnualLeaveBalanceService(
             Year = year,
             CompanyId = companyId
         };
-        var (employees, supervisors, statistics) = await baseService.FetchMultipleAsync<AnnualLeaveBalance, EmployeeSupervisor, SectionStatisticAnnualLeave>(criteria);
+        var (employees, supervisors, statistics)
+            = await baseService.FetchMultipleAsync<AnnualLeaveBalance, EmployeeSupervisor, SectionStatisticAnnualLeave>(criteria);
         var bodyTemplate = ReadTextFile(Path.Combine(hostEnvironment.ContentRootPath, RemindUseALTemplatePath));
         var validEmployees = new List<AnnualLeaveBalance>();
         var mailConfig = await mailService.GetMailConfigAsync(companyId);

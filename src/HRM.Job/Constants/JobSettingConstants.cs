@@ -17,4 +17,5 @@ public static class JobSettingConstants
     public const string MailSetting = "MailSetting";
 
     public const string ProcessEmployeeAttendance = "ProcessEmployeeAttendance";
+    public const string ProcessDiscipline = "ProcessDiscipline";
 }

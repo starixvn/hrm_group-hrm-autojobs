@@ -1,6 +1,6 @@
 ﻿namespace HRM.Job.Enum;
 
-public enum TimeLineEnum
+public enum AnnualLeaveTimeline
 {
     Yearly = 1,
     JoinedDate = 2

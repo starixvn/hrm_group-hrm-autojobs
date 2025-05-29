@@ -10,7 +10,7 @@ public class TeamDisciplinePermissionAPI(IHttpClientService httpClient) : ITeamD
 {
     public async Task<DateTime> GetLastModifiedDateAsync(TokenAccess token, ServiceAPI serviceApi)
     {
-        var result = await httpClient.ExecuteGetAsync<DateTime>(serviceApi.Domain + "TeamDisciplinePermission", token.Value, null);
+        var result = await httpClient.ExecuteGetAsync<DateTime>(serviceApi.Domain + "TeamDisciplinePermission", token.Value);
 
         return result;
     }

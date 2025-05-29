@@ -14,8 +14,7 @@ using Newtonsoft.Json;
 
 namespace HRM.Job.Services;
 
-public class BaseMailService(
-    IBaseService baseService) : IBaseMailService
+public class BaseMailService(IBaseService baseService) : IBaseMailService
 {
     public async Task<MailConfig> GetMailConfigAsync(short companyId)
     {
