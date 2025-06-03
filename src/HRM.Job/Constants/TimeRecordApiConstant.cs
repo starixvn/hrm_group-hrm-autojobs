@@ -10,6 +10,7 @@ public static class TimeRecordApiConstant
         {
             {"SMS", 3},
             {"HM", 4},
-            {"LEX", 6}
+            {"LEX", 6},
+            {"CTS", 9},
         }.ToImmutableDictionary();
 }
