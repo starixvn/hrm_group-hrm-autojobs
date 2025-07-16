@@ -13,5 +13,5 @@ public class TimeRecordAPI
 
     public string EmpNo { get; set; }
     public byte? InOutType { get; set; }
-    public DateTime RecordTime { get; set; }
+    public DateTime? RecordTime { get; set; }
 }

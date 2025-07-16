@@ -72,7 +72,7 @@ public class TimeRecordService(
 
     private async Task ImportTimeRecordAsync(float clientTimeZone, DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
     {
-        var recordsByCompany = records.GroupBy(x => x.Company);
+        var recordsByCompany = records.Where(x => x.RecordTime.HasValue).GroupBy(x => x.Company);
         foreach (var record in recordsByCompany)
         {
             var companyId = TimeRecordApiConstant.CompanyDict.GetValueOrDefault(record.Key);
@@ -84,7 +84,7 @@ public class TimeRecordService(
             var timeRecords = record.ToList();
             foreach (var timeRecord in timeRecords)
             {
-                timeRecord.RecordTime = timeRecord.RecordTime.ToServerTimeZone(clientTimeZone);
+                timeRecord.RecordTime = timeRecord.RecordTime.Value.ToServerTimeZone(clientTimeZone);
             }
 
             await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
@@ -94,6 +94,17 @@ public class TimeRecordService(
 
     private async Task ImportTimeRecordAsync(short companyId, DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
     {
+        const short hyjayCompanyId = 18;
+        if (companyId == hyjayCompanyId)
+        {
+            records = records.Select(x => new TimeRecordAPI
+            {
+                EmpNo = $"HJ{x.EmpNo}",
+                InOutType = x.InOutType,
+                RecordTime = x.RecordTime
+            }).ToList();
+        }
+
         var command = new ImportTimeRecordCommand
         {
             CompanyId = companyId,

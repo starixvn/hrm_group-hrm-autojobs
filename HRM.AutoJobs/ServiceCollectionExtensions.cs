@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Fanex.Caching.Redis;
+﻿using System.Collections.Generic;
 using Fanex.Data.Repository;
 using Fanex.Logging;
 using HRM.AutoJobs.Workers;
@@ -9,10 +7,8 @@ using HRM.Job.Services;
 using HRM.Job.Services.Interfaces;
 using HRM.LetStalk.Core.Services;
 using HRM.LetStalk.Core.Services.Interfaces;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using StackExchange.Redis;
 
 namespace HRM.AutoJobs;
 
@@ -45,36 +41,6 @@ public static class ServiceCollectionExtensions
 
         var timeRecordApiSettings = configuration.GetSection("TimeRecordApiSettings").Get<List<TimeRecordApiSetting>>();
         services.AddSingleton(timeRecordApiSettings);
-    }
-
-    public static void AddRedis(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddRedisCache(configuration.GetSection("fanex.caching.redis"));
-
-        var redisConfig = configuration.GetSection("AuthSettings:RedisConfig").Value;
-        var redisMultiplexer = ConnectionMultiplexer.Connect(redisConfig);
-
-        services.AddDataProtection().PersistKeysToStackExchangeRedis(redisMultiplexer, "HRM.AutoJob:ProtectionKeys");
-
-        services.AddSingleton(redisMultiplexer);
-
-        services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = redisConfig;
-            options.InstanceName = "HRM.AutoJob:Session:";
-        });
-    }
-
-    public static IServiceCollection AddRedisSession(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddSession(options =>
-        {
-            options.Cookie.IsEssential = true;
-            options.IdleTimeout = TimeSpan.FromMinutes(int.Parse(configuration.GetSection("AuthSettings:SessionTimeOut").Value ?? string.Empty));
-            options.Cookie.Name = "HRM.Website.Session";
-        });
-
-        return services;
     }
 
     public static void AddJobsServices(this IServiceCollection services)
