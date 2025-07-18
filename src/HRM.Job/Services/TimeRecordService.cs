@@ -84,7 +84,7 @@ public class TimeRecordService(
             var timeRecords = record.ToList();
             foreach (var timeRecord in timeRecords)
             {
-                timeRecord.RecordTime = timeRecord.RecordTime.Value.ToServerTimeZone(clientTimeZone);
+                timeRecord.RecordTimeXml = timeRecord.RecordTime.Value.ToServerTimeZone(clientTimeZone);
             }
 
             await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
@@ -101,7 +101,7 @@ public class TimeRecordService(
             {
                 EmpNo = $"HJ{x.EmpNo}",
                 InOutType = x.InOutType,
-                RecordTime = x.RecordTime
+                RecordTimeXml = x.RecordTimeXml
             }).ToList();
         }
 

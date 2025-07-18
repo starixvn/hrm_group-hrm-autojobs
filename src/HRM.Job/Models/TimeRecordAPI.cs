@@ -13,5 +13,10 @@ public class TimeRecordAPI
 
     public string EmpNo { get; set; }
     public byte? InOutType { get; set; }
+
+    [XmlIgnore]
     public DateTime? RecordTime { get; set; }
+
+    [XMLName("RecordTime")]
+    public DateTime RecordTimeXml { get; set; }
 }
