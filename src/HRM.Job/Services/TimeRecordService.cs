@@ -66,7 +66,7 @@ public class TimeRecordService(
         }
         catch (Exception ex)
         {
-            await logger.ErrorAsync(ex.Message, ex);
+            await logger.ErrorAsync($"{ex.Message}\r\n{url}", ex);
         }
     }
 
