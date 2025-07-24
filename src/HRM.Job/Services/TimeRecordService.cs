@@ -66,13 +66,13 @@ public class TimeRecordService(
         }
         catch (Exception ex)
         {
-            await logger.ErrorAsync(ex.Message, ex);
+            await logger.ErrorAsync($"{ex.Message}\r\n{url}", ex);
         }
     }
 
     private async Task ImportTimeRecordAsync(float clientTimeZone, DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
     {
-        var recordsByCompany = records.GroupBy(x => x.Company);
+        var recordsByCompany = records.Where(x => x.RecordTime.HasValue).GroupBy(x => x.Company);
         foreach (var record in recordsByCompany)
         {
             var companyId = TimeRecordApiConstant.CompanyDict.GetValueOrDefault(record.Key);
@@ -84,7 +84,7 @@ public class TimeRecordService(
             var timeRecords = record.ToList();
             foreach (var timeRecord in timeRecords)
             {
-                timeRecord.RecordTime = timeRecord.RecordTime.ToServerTimeZone(clientTimeZone);
+                timeRecord.RecordTimeXml = timeRecord.RecordTime.Value.ToServerTimeZone(clientTimeZone);
             }
 
             await logger.InfoAsync($"Import time record: {companyId} - {JsonConvert.SerializeObject(timeRecords)}");
@@ -94,6 +94,17 @@ public class TimeRecordService(
 
     private async Task ImportTimeRecordAsync(short companyId, DateTime fromDate, DateTime toDate, IList<TimeRecordAPI> records)
     {
+        const short hyjayCompanyId = 18;
+        if (companyId == hyjayCompanyId)
+        {
+            records = records.Select(x => new TimeRecordAPI
+            {
+                EmpNo = $"HJ{x.EmpNo}",
+                InOutType = x.InOutType,
+                RecordTimeXml = x.RecordTimeXml
+            }).ToList();
+        }
+
         var command = new ImportTimeRecordCommand
         {
             CompanyId = companyId,
