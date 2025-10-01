@@ -16,6 +16,7 @@ public static class TimeRecordApiConstant
             {"Hyjay", 18},
             {"NF", 20}, // Next Fortune
             {"OL", 22}, // One Lab
+            {"Ninetrix", 29},
             {"EMC", 31},
             {"SSI", 33}
         }.ToImmutableDictionary();
