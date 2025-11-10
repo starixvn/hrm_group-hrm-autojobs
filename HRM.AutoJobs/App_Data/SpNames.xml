@@ -15,7 +15,8 @@
         <Setting Key="AnnualLeave_ResetConfigs_Get" SpName="AnnualLeave_ResetConfigs_Get" DbName="bodb_HRM" Plain="0" />
         <Setting Key="Employees_ServiceDetail_Get" SpName="Employees_ServiceDetail_Get" DbName="bodb_HRM" Plain="0" />
         <Setting Key="Auto_AnnualLeaveBalance_JoinedDate_Update" SpName="Auto_AnnualLeaveBalance_JoinedDate_Update" DbName="bodb_HRM" Plain="0" />
-        <Setting Key="Auto_Discipline_ProcessWaitingCase" SpName="Auto_Discipline_ProcessWaitingCase" DbName="bodb_HRM" Plain="0" />
+		<Setting Key="Auto_Discipline_ProcessWaitingCase" SpName="Auto_Discipline_ProcessWaitingCase" DbName="bodb_HRM" Plain="0" />
+		<Setting Key="TWLeaveBalanceConfigs_Get" SpName="TWLeaveBalanceConfigs_Get" DbName="bodb_HRM" Plain="0" />
     </Function>
     <Function Name="MailDeliver">
         <Setting Key="MailRecorder_GetSetting" SpName="MailRecorder_GetSetting" DbName="bodb_HRM">
