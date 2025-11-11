@@ -1,6 +1,7 @@
 ﻿namespace HRM.AutoJobs.Workers;
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Job.Constants;
 using Job.Enum;
@@ -37,7 +38,7 @@ public class InsertALBalanceForNewEmployeeWorker : BaseWorker
 
                 case AnnualLeaveTimeline.Yearly:
                 default:
-                    await annualLeaveBalanceService.InsertForNewEmployeeAsync(config.CompanyId);
+                    await annualLeaveBalanceService.InsertForNewEmployeesByYearlyAsync(config);
                     break;
             }
         }
