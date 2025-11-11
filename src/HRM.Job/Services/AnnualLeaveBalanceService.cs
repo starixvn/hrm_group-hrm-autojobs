@@ -259,7 +259,7 @@ public class AnnualLeaveBalanceService(
 
             model.AnnualLeaves = config.LaborBalance;
             model.ExtraLeaves = config.CompanyLeave;
-            var maxAllowed = employee.IsLocal ? MaxLocalAL : MaxExpatAL;
+            var maxAllowed = MaxLocalAL;
             var total = model.AnnualLeaves + model.ExtraLeaves;
 
             if (total > maxAllowed)
