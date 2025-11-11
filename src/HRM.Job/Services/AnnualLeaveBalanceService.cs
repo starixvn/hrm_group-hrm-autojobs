@@ -29,12 +29,16 @@ public class AnnualLeaveBalanceService(
 {
     private const string RemindUseALTemplatePath = "EmailTemplates/RemindUseAL.txt";
     private const string StatisticALBalanceTemplatePath = "EmailTemplates/StatisticALBalance.txt";
+    private const int MaxLocalAL = 30;
+    private const int MaxExpatAL = 37;
 
     private readonly ILogger logfile = logfile;
 
     public async Task InsertForNextYearByYearlyAsync(AnnualLeaveResetConfig config)
     {
         var employees = await GetEmployeesDetail(config.CompanyId);
+
+        employees = employees.Where(e => e.ConfirmedDate != null).ToList();
 
         List<AnnualLeaveUpdateModel> annualLeaveUpdateModels = [];
 
@@ -52,6 +56,14 @@ public class AnnualLeaveBalanceService(
             if (config.IsEnableAdditionalAnnualLeaveBalance)
             {
                 model.ExtraLeaves = (int)Math.Floor(yearsOfService / employee.ExtraLeaveForYearsOfService);
+                var maxAllowed = employee.IsLocal ? MaxLocalAL : MaxExpatAL;
+                var total = model.AnnualLeaves + model.ExtraLeaves;
+
+                if (total > maxAllowed)
+                {
+                    // reduce only ExtraLeaves to cap total
+                    model.ExtraLeaves = Math.Max(0, maxAllowed - model.AnnualLeaves);
+                }
             }
 
             annualLeaveUpdateModels.Add(model);
@@ -245,8 +257,16 @@ public class AnnualLeaveBalanceService(
                     .FirstOrDefault(c => c.Year == yearsOfService);
             }
 
-            model.ExtraLeaves = config.CompanyLeave;
             model.AnnualLeaves = config.LaborBalance;
+            model.ExtraLeaves = config.CompanyLeave;
+            var maxAllowed = employee.IsLocal ? MaxLocalAL : MaxExpatAL;
+            var total = model.AnnualLeaves + model.ExtraLeaves;
+
+            if (total > maxAllowed)
+            {
+                // reduce only ExtraLeaves to cap total
+                model.ExtraLeaves = Math.Max(0, maxAllowed - model.AnnualLeaves);
+            }
 
             model.Year = termDate.Year;
             annualLeaveUpdateModels.Add(model);

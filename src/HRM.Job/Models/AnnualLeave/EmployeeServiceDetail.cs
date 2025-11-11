@@ -10,6 +10,8 @@ public class EmployeeServiceDetail
 
     public DateTime JoinedDate { get; set; }
 
+    public bool IsLocal { get; set; }
+
     public DateTime? ConfirmedDate { get; set; }
 
     public int WorkingDays { get; set; }
