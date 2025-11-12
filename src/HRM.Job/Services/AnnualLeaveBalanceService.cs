@@ -54,15 +54,16 @@ public class AnnualLeaveBalanceService(
 
             if (config.IsEnableAdditionalAnnualLeaveBalance)
             {
-                model.ExtraLeaves = (int)Math.Floor(yearsOfService / employee.ExtraLeaveForYearsOfService);
+                var extraLeave = (int)Math.Floor(yearsOfService / employee.ExtraLeaveForYearsOfService);
                 var maxAllowed = employee.IsLocal ? MaxLocalAL : MaxExpatAL;
                 var total = model.AnnualLeaves + model.ExtraLeaves;
 
                 if (total > maxAllowed)
                 {
                     // reduce only ExtraLeaves to cap total
-                    model.ExtraLeaves = Math.Max(0, maxAllowed - model.AnnualLeaves);
+                    extraLeave = Math.Max(0, maxAllowed - model.AnnualLeaves);
                 }
+                model.AnnualLeaves += extraLeave;
             }
 
             annualLeaveUpdateModels.Add(model);
