@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -103,10 +102,11 @@ public class AnnualLeaveBalanceService(
     {
         var employees = await GetEmployeesDetail(config.CompanyId);
 
+        var today = DateTimeOffset.Now.Date;
         employees = employees
             .Where(e => e.ConfirmedDate.HasValue 
-                    && e.ConfirmedDate.Value.Date >= DateTime.Today.AddDays(-7)
-                    && e.ConfirmedDate.Value.Date <= DateTime.Today)
+                    && e.ConfirmedDate.Value.Date >= today.AddDays(-7)
+                    && e.ConfirmedDate.Value.Date <= today)
             .ToList();
 
         List<AnnualLeaveUpdateModel> annualLeaveUpdateModels = [];
@@ -132,18 +132,20 @@ public class AnnualLeaveBalanceService(
 
     private static int CalculateMonthOfServicesForNewEmployee(EmployeeServiceDetail employee)
     {
-        DateTime endOfYearDate = new(
+        DateTimeOffset endOfYearDate = new(
                 employee.ConfirmedDate.Value.Year,
                 12,
                 1,
                 0, 0, 0,
-                DateTimeKind.Local 
+                TimeSpan.Zero
             );
 
         int monthDiff = ((endOfYearDate.Year - employee.JoinedDate.Year) * 12 + endOfYearDate.Month - employee.JoinedDate.Month);
 
         if (employee.JoinedDate.Day <= 15)
+        {
             monthDiff += 1;
+        }
 
         decimal amount = (employee.AnnualLeave / 12m) * monthDiff;
 
@@ -244,22 +246,13 @@ public class AnnualLeaveBalanceService(
                 yearsOfService--;
             }
 
-            TWAnnualLeaveConfigModel config;
-
-            if (yearsOfService > maxConfigYear)
-            {
-                config = TWConfigs
-                    .FirstOrDefault(c => c.Year == maxConfigYear);
-            }
-            else
-            {
-                config = TWConfigs
-                    .FirstOrDefault(c => c.Year == yearsOfService);
-            }
+            TWAnnualLeaveConfigModel config = yearsOfService > maxConfigYear
+                ? TWConfigs.FirstOrDefault(c => c.Year == maxConfigYear)
+                : TWConfigs.FirstOrDefault(c => c.Year == yearsOfService);
 
             model.AnnualLeaves = config.LaborBalance;
             model.ExtraLeaves = config.CompanyLeave;
-            var maxAllowed = MaxLocalAL;
+            const int maxAllowed = MaxLocalAL;
             var total = model.AnnualLeaves + model.ExtraLeaves;
 
             if (total > maxAllowed)

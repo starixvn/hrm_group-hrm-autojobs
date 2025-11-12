@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Job.Constants;
 using Job.Helpers;
 using Job.Models;
-using System.Linq;
 using Job.Enum;
 using Job.Services.Interfaces;
 

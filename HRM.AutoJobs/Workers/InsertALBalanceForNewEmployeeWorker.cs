@@ -1,7 +1,6 @@
 ﻿namespace HRM.AutoJobs.Workers;
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Job.Constants;
 using Job.Enum;
