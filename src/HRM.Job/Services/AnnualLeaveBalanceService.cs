@@ -46,7 +46,6 @@ public class AnnualLeaveBalanceService(
             var model = new AnnualLeaveUpdateModel
             {
                 EmpId = employee.EmpId,
-                Year = DateTimeOffset.Now.Year + 1,
                 AnnualLeaves = employee.AnnualLeave
             };
 
@@ -72,7 +71,8 @@ public class AnnualLeaveBalanceService(
 
         var command = new UpdateAnnualLeaveBalanceByYearlyCriteria
         {
-            ListAnnualLeaveJson = JsonConvert.SerializeObject(annualLeaveUpdateModels)
+            ListAnnualLeaveJson = JsonConvert.SerializeObject(annualLeaveUpdateModels),
+            Year = DateTimeOffset.Now.Year + 1
         };
         await baseService.ExecuteNonQueryAsync(command);
     }
@@ -106,7 +106,7 @@ public class AnnualLeaveBalanceService(
         var today = DateTimeOffset.Now.Date;
         employees = employees
             .Where(e => e.ConfirmedDate.HasValue 
-                    && e.ConfirmedDate.Value.Date >= today.AddDays(-7)
+                    && e.ConfirmedDate.Value.Date >= today.AddDays(-2)
                     && e.ConfirmedDate.Value.Date <= today)
             .ToList();
 
@@ -117,7 +117,6 @@ public class AnnualLeaveBalanceService(
             var model = new AnnualLeaveUpdateModel
             {
                 EmpId = employee.EmpId,
-                Year = DateTimeOffset.Now.Year,
                 AnnualLeaves = CalculateMonthOfServicesForNewEmployee(employee)
             };
 
@@ -126,7 +125,9 @@ public class AnnualLeaveBalanceService(
 
         var command = new UpdateAnnualLeaveBalanceByYearlyCriteria
         {
-            ListAnnualLeaveJson = JsonConvert.SerializeObject(annualLeaveUpdateModels)
+            ListAnnualLeaveJson = JsonConvert.SerializeObject(annualLeaveUpdateModels),
+            Year = DateTimeOffset.Now.Year
+
         };
         await baseService.ExecuteNonQueryAsync(command);
     }
