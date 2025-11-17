@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HRM.Job.Constants;
 using HRM.Job.Criteria;
 using HRM.Job.Criteria.AnnualLeave;
 using HRM.Job.Extensions;
@@ -27,43 +28,162 @@ public class AnnualLeaveBalanceService(
 {
     private const string RemindUseALTemplatePath = "EmailTemplates/RemindUseAL.txt";
     private const string StatisticALBalanceTemplatePath = "EmailTemplates/StatisticALBalance.txt";
+    private const int MaxLocalAL = 30;
+    private const int MaxExpatAL = 37;
 
     private readonly ILogger logfile = logfile;
 
-    public async Task InsertForNextYearAsync(short companyId)
+    public async Task InsertForNextYearByYearlyAsync(AnnualLeaveResetConfig config)
     {
-        var command = new UpdateAnnualLeaveBalanceCommand
+        var employees = await GetEmployeesDetail(config.CompanyId);
+
+        employees = employees.Where(e => e.ConfirmedDate != null).ToList();
+
+        List<AnnualLeaveUpdateModel> annualLeaveUpdateModels = [];
+
+        foreach (var employee in employees)
         {
-            Year = DateTimeOffset.Now.Year + 1,
-            CompanyId = companyId
+            var model = new AnnualLeaveUpdateModel
+            {
+                EmpId = employee.EmpId,
+                AnnualLeaves = employee.AnnualLeave
+            };
+
+            var yearsOfService = CalculateLengthOfService(employee.JoinedDate, employee.MilitaryFromDate, employee.MilitaryToDate);
+
+            if (config.IsEnableAdditionalAnnualLeaveBalance)
+            {
+                var extraLeave = (int)Math.Floor(yearsOfService / employee.ExtraLeaveForYearsOfService);
+                var maxAllowed = employee.IsLocal ? MaxLocalAL : MaxExpatAL;
+                var total = model.AnnualLeaves + model.ExtraLeaves;
+
+                if (total > maxAllowed)
+                {
+                    // reduce only ExtraLeaves to cap total
+                    extraLeave = Math.Max(0, maxAllowed - model.AnnualLeaves);
+                }
+                model.AnnualLeaves += extraLeave;
+            }
+
+            annualLeaveUpdateModels.Add(model);
+
+        }
+
+        var command = new UpdateAnnualLeaveBalanceByYearlyCriteria
+        {
+            ListAnnualLeaveJson = JsonConvert.SerializeObject(annualLeaveUpdateModels),
+            Year = DateTimeOffset.Now.Year + 1
         };
         await baseService.ExecuteNonQueryAsync(command);
     }
 
-    public async Task InsertForNewEmployeeAsync(short companyId)
+    private static double CalculateLengthOfService(DateTime joinedDate, DateTime? militaryFromDate, DateTime? militaryToDate)
     {
-        var command = new InsertAnnualLeaveBalanceForNewEmployeeCommand
+        var today = DateTimeOffset.Now;
+        var nextTermDate = new DateTimeOffset(
+            today.Year + 1,
+            1,
+            1,
+            0, 0, 0,
+            today.Offset);
+
+        var totalMonths = (nextTermDate.Year - joinedDate.Year) * 12 + nextTermDate.Month - joinedDate.Month;
+        if (militaryToDate.HasValue && militaryFromDate.HasValue)
         {
-            Year = DateTimeOffset.Now.Year,
-            CompanyId = companyId
+            int militaryMonths = ((militaryToDate.Value.Year - militaryFromDate.Value.Year) * 12)
+                                + militaryToDate.Value.Month - militaryFromDate.Value.Month;
+            totalMonths -= militaryMonths;
+        }
+
+        int lengthOfService = (int)Math.Floor(totalMonths / 12.0);
+        return lengthOfService;
+    }
+
+    public async Task InsertForNewEmployeesByYearlyAsync(AnnualLeaveResetConfig config)
+    {
+        var employees = await GetEmployeesDetail(config.CompanyId);
+
+        var today = DateTimeOffset.Now.Date;
+        employees = employees
+            .Where(e => e.ConfirmedDate.HasValue 
+                    && e.ConfirmedDate.Value.Date >= today.AddDays(-2)
+                    && e.ConfirmedDate.Value.Date <= today)
+            .ToList();
+
+        List<AnnualLeaveUpdateModel> annualLeaveUpdateModels = [];
+
+        foreach (var employee in employees)
+        {
+            var model = new AnnualLeaveUpdateModel
+            {
+                EmpId = employee.EmpId,
+                AnnualLeaves = CalculateMonthOfServicesForNewEmployee(employee)
+            };
+
+            annualLeaveUpdateModels.Add(model);
+        }
+
+        var command = new UpdateAnnualLeaveBalanceByYearlyCriteria
+        {
+            ListAnnualLeaveJson = JsonConvert.SerializeObject(annualLeaveUpdateModels),
+            Year = DateTimeOffset.Now.Year
+
         };
         await baseService.ExecuteNonQueryAsync(command);
+    }
+
+    private static int CalculateMonthOfServicesForNewEmployee(EmployeeServiceDetail employee)
+    {
+        DateTimeOffset endOfYearDate = new(
+                employee.ConfirmedDate.Value.Year,
+                12,
+                1,
+                0, 0, 0,
+                TimeSpan.Zero
+            );
+
+        int monthDiff = ((endOfYearDate.Year - employee.JoinedDate.Year) * 12 + endOfYearDate.Month - employee.JoinedDate.Month);
+
+        if (employee.JoinedDate.Day <= 15)
+        {
+            monthDiff += 1;
+        }
+
+        decimal amount = (employee.AnnualLeave / 12m) * monthDiff;
+
+        amount = Math.Round(Math.Round(amount, 1), 0);
+
+        return (int)amount;
     }
 
     public async Task<IEnumerable<AnnualLeaveResetConfig>> GetAnnualLeaveResetConfigs()
     {
         var command = new GetAnnualLeaveResetConfigsCriteria();
 
-        return  await baseService.GetDataAsync<AnnualLeaveResetConfig>(command);
+        var companies =  await baseService.GetDataAsync<AnnualLeaveResetConfig>(command);
+
+        var excludeNexCompanies = companies.Where(c => !CommonConstants.NexCompanyIds.Contains(c.CompanyId));
+
+        return excludeNexCompanies;
     }
 
     public async Task InsertForNewEmployeesByJoinedDateAsync(AnnualLeaveResetConfig config)
     {
-        const bool isNewEmployee = true;
         var employees = await GetEmployeesDetail(config.CompanyId);
 
+        const bool isCalculatingNewEmployee = true;
+        var TWConfigs = await GetTWAnnualLeaveConfigs();
+
+        var today = DateTimeOffset.Now;
+
+        employees = employees
+            .Where(e => {
+                 return e.JoinedDate.Year == today.Year;
+             })
+            .ToList();
+
         var annualLeaveUpdateModels 
-            = CalculateExtraLeavesForEmployeesByJoinedDate(employees, config.IsEnableAdditionalAnnualLeaveBalance, isNewEmployee);
+            = CalculateExtraLeavesForEmployeesByJoinedDate(employees, TWConfigs, isCalculatingNewEmployee);
 
         var command = new UpdateAnnualLeaveBalanceByJoinedDateCriteria
         {
@@ -74,7 +194,6 @@ public class AnnualLeaveBalanceService(
 
     public async Task InsertForNextYearByJoinedDateAsync(AnnualLeaveResetConfig config)
     {
-        const bool isNewEmployee = false;
         var employees = await GetEmployeesDetail(config.CompanyId);
 
         var today = DateTimeOffset.Now;
@@ -87,8 +206,10 @@ public class AnnualLeaveBalanceService(
             })
             .ToList();
 
+        const bool isCalculatingNewEmployee = false;
+        var TWConfigs = await GetTWAnnualLeaveConfigs();
         var annualLeaveUpdateModels
-            = CalculateExtraLeavesForEmployeesByJoinedDate(employees, config.IsEnableAdditionalAnnualLeaveBalance, isNewEmployee);
+            = CalculateExtraLeavesForEmployeesByJoinedDate(employees, TWConfigs, isCalculatingNewEmployee);
 
         var command = new UpdateAnnualLeaveBalanceByJoinedDateCriteria
         {
@@ -99,31 +220,24 @@ public class AnnualLeaveBalanceService(
 
     private static List<AnnualLeaveUpdateModel> CalculateExtraLeavesForEmployeesByJoinedDate(
         IEnumerable<EmployeeServiceDetail> employees,
-        bool isEnableAdditionalAnnualLeaveBalance,
-        bool isNewEmployee)
+        IEnumerable<TWAnnualLeaveConfigModel> TWConfigs,
+        bool isCalculatingNewEmployee)
     {
         List<AnnualLeaveUpdateModel> annualLeaveUpdateModels = [];
         var termDate = DateTimeOffset.Now;
-        if (!isNewEmployee)
+        if (!isCalculatingNewEmployee)
         {
             termDate = termDate.AddMonths(3);
         }
+
+        var maxConfigYear = TWConfigs.Max(c => c.Year);
         foreach (var employee in employees)
         {
             var model = new AnnualLeaveUpdateModel
             {
-                AnnualLeaves = employee.AnnualLeave,
                 EmpId = employee.EmpId,
-                ExtraLeaves = 0,
                 Year = DateTimeOffset.Now.Year
             };
-
-            var isEmployeeNewJoined = employee.JoinedDate.Year == termDate.Year;
-            if (!isEnableAdditionalAnnualLeaveBalance || isEmployeeNewJoined)
-            {
-                annualLeaveUpdateModels.Add(model);
-                continue;
-            }
 
             var joinedDate = employee.JoinedDate;
             var yearsOfService = termDate.Year - joinedDate.Year;
@@ -134,18 +248,22 @@ public class AnnualLeaveBalanceService(
                 yearsOfService--;
             }
 
-            if (yearsOfService > 0 && employee.ExtraLeaveForYearsOfService > 0)
+            TWAnnualLeaveConfigModel config = yearsOfService > maxConfigYear
+                ? TWConfigs.FirstOrDefault(c => c.Year == maxConfigYear)
+                : TWConfigs.FirstOrDefault(c => c.Year == yearsOfService);
+
+            model.AnnualLeaves = config.LaborBalance;
+            model.ExtraLeaves = config.CompanyLeave;
+            const int maxAllowed = MaxLocalAL;
+            var total = model.AnnualLeaves + model.ExtraLeaves;
+
+            if (total > maxAllowed)
             {
-                model.ExtraLeaves = (int)Math.Floor((double)yearsOfService / employee.ExtraLeaveForYearsOfService);
+                // reduce only ExtraLeaves to cap total
+                model.ExtraLeaves = Math.Max(0, maxAllowed - model.AnnualLeaves);
             }
 
             model.Year = termDate.Year;
-            // Handle old employees with old terms
-            var isCalculateFor3MonthsLater = !isNewEmployee;
-            if (!isEmployeeNewJoined && !isCalculateFor3MonthsLater)
-            {
-                model.Year--;
-            }
             annualLeaveUpdateModels.Add(model);
         }
 
@@ -160,6 +278,12 @@ public class AnnualLeaveBalanceService(
         };
         var employees = await baseService.GetDataAsync<EmployeeServiceDetail>(command);
         return employees;
+    }
+
+    private async Task<IEnumerable<TWAnnualLeaveConfigModel>> GetTWAnnualLeaveConfigs()
+    {
+        var command = new GetTWLeaveBalanceConfigsCriteria();
+        return await baseService.GetDataAsync<TWAnnualLeaveConfigModel>(command);
     }
 
     public async Task RemindUsedALAsync(short companyId)

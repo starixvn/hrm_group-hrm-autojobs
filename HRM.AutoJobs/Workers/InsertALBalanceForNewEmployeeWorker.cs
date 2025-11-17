@@ -37,7 +37,7 @@ public class InsertALBalanceForNewEmployeeWorker : BaseWorker
 
                 case AnnualLeaveTimeline.Yearly:
                 default:
-                    await annualLeaveBalanceService.InsertForNewEmployeeAsync(config.CompanyId);
+                    await annualLeaveBalanceService.InsertForNewEmployeesByYearlyAsync(config);
                     break;
             }
         }
