@@ -1,6 +1,5 @@
 ﻿namespace HRM.AutoJobs.Workers;
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -9,7 +8,6 @@ using Job.Helpers;
 using Job.Models;
 using Job.Enum;
 using Job.Services.Interfaces;
-using System.Linq;
 
 public class InsertALBalanceForNextYearWorker : BaseWorker
 {
