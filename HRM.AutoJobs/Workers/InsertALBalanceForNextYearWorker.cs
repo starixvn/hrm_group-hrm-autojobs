@@ -38,14 +38,7 @@ public class InsertALBalanceForNextYearWorker : BaseWorker
                     break;
                 case AnnualLeaveTimeline.Yearly:
                 default:
-                    var today = DateTimeOffset.UtcNow;
-                    var lastDay = DateTime.DaysInMonth(today.Year, today.Month);
-                    var lastDayMonths = new[] { 8, 11 };
-
-                    if (today.Day == lastDay && lastDayMonths.Contains(today.Month))
-                    {
-                        await annualLeaveBalanceService.InsertForNextYearByYearlyAsync(config);
-                    }
+                    await annualLeaveBalanceService.InsertForNextYearByYearlyAsync(config);
                     break;
             }
         }
